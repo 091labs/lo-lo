@@ -1,0 +1,30 @@
+<resources>
+
+    <string name="app_name">091 Labs lo-lo</string>
+    <string name="menu_settings">Settings</string>
+    <string name="contentDescription">lo-lo Image</string>
+    <string name="iconImageDescription">logo</string>
+
+    <!-- Preference Activity -->
+    <string name="prefsCat_General">General</string>
+    <string name="prefsOnClick_title">OnClick event</string>
+    <string name="prefsOnClick_dialogTitle">Select One</string>
+
+    <string-array name="OnClick_entries">
+        <item>Nothing</item>
+        <item>Update lo-lo status</item>
+        <item>Open preference screen</item>
+        <item>Open 091 Labs web page</item>
+    </string-array>
+    <string-array name="OnClick_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="prefsCat_Info">Information</string>
+    <string name="prefsInfo_Title">091 Labs lo-lo v1.1</string>
+    <string name="prefsInfo_summary">GNU GPL License v3 - 2012</string>
+
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/prefsCat_General" >
+        <ListPreference
+            android:key="lstOnClick"
+            android:title="@string/prefsOnClick_title"
+            android:entries="@array/OnClick_entries"
+            android:entryValues="@array/OnClick_values"
+            android:defaultValue="0"
+            android:dialogTitle="@string/prefsOnClick_dialogTitle" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/prefsCat_Info" >
+        <Preference
+            android:summary="@string/prefsInfo_summary"
+            android:title="@string/prefsInfo_Title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
