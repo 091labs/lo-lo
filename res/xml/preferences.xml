@@ -3,12 +3,17 @@
 
     <PreferenceCategory android:title="@string/prefsCat_General" >
         <ListPreference
-            android:key="lstOnClick"
-            android:title="@string/prefsOnClick_title"
+            android:defaultValue="0"
+            android:dialogTitle="@string/prefsOnClick_dialogTitle"
             android:entries="@array/OnClick_entries"
             android:entryValues="@array/OnClick_values"
-            android:defaultValue="0"
-            android:dialogTitle="@string/prefsOnClick_dialogTitle" />
+            android:key="lstOnClick"
+            android:title="@string/prefsOnClick_title" />
+
+        <EditTextPreference
+            android:key="eURL"
+            android:title="@string/prefsURL_title"
+            android:defaultValue="@string/prefsURL_default" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefsCat_Info" >
         <Preference

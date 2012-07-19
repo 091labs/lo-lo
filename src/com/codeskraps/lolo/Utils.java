@@ -43,7 +43,7 @@ public class Utils {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
 				.getContent(), "UTF-8"));
 		String json = reader.readLine();
-		Log.d(TAG, "json: " + json);
+//		Log.d(TAG, "json: " + json);
 		JSONTokener tokener = new JSONTokener(json);
 
 		String lolo = null;
@@ -55,7 +55,7 @@ public class Utils {
 			Log.e(TAG, e.getMessage());
 		}
 
-		Log.d(TAG, "download ready in"
+		Log.d(TAG, "download ready in "
 				+ ((System.currentTimeMillis() - startTime) / 1000) + " sec");
 
 		if (lolo.equals("true")) {

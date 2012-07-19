@@ -7,14 +7,15 @@
 
     <!-- Preference Activity -->
     <string name="prefsCat_General">General</string>
-    <string name="prefsOnClick_title">OnClick event</string>
-    <string name="prefsOnClick_dialogTitle">Select One</string>
+    <string name="prefsOnClick_title">On touch action</string>
+    <string name="prefsOnClick_dialogTitle">On touch action</string>
+    <string name="prefsOnClick_summary">Choose what should be done when you touch the widget -</string>
 
     <string-array name="OnClick_entries">
-        <item>Nothing</item>
+        <item>Do nothing</item>
         <item>Update lo-lo status</item>
-        <item>Open preference screen</item>
-        <item>Open 091 Labs web page</item>
+        <item>Open widget settings</item>
+        <item>Open URL</item>
     </string-array>
     <string-array name="OnClick_values">
         <item>0</item>
@@ -22,9 +23,13 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    
+    <string name="prefsURL_title">URL</string>
+    <string name="prefsURL_summary">Set a Custom URL -</string>
+    <string name="prefsURL_default">091labs.com</string>
 
     <string name="prefsCat_Info">Information</string>
-    <string name="prefsInfo_Title">091 Labs lo-lo v1.1</string>
+    <string name="prefsInfo_Title">091 Labs lo-lo v1.2</string>
     <string name="prefsInfo_summary">GNU GPL License v3 - 2012</string>
 
 </resources>

@@ -1,6 +1,8 @@
 package com.codeskraps.lolo;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
@@ -10,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class UpdateWidgetService extends Service {
 	private static final String TAG = UpdateWidgetService.class.getSimpleName();
@@ -77,6 +80,23 @@ public class UpdateWidgetService extends Service {
 						remoteViews.setImageViewResource(R.id.imgLolo, R.drawable.closed);
 						Log.d(TAG, "The labs is close");
 					}
+
+					Calendar c = Calendar.getInstance();
+
+					String hours = new String("");
+					if (c.get(Calendar.HOUR_OF_DAY) < 10)
+						hours += "0";
+					hours += c.get(Calendar.HOUR_OF_DAY);
+
+					String minutes = new String("");
+					if (c.get(Calendar.MINUTE) < 10)
+						minutes += "0";
+					minutes += c.get(Calendar.MINUTE);
+
+					String lastSync = String.format("%s:%s\n", hours, minutes);
+					Log.d(TAG, "lastSnync:" + lastSync);
+					remoteViews.setTextViewText(R.id.txtSync, lastSync);
+
 					appWidgetManager.updateAppWidget(widgetId, remoteViews);
 				}
 			} else {

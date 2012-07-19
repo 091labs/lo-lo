@@ -1,13 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#222222"
+        android:background="#333333"
         android:orientation="horizontal" >
 
         <ImageView
@@ -22,15 +18,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/app_name"
-            android:textColor="#B39000"
+            android:textColor="#AAAAAA"
             android:textSize="25dp"
             android:typeface="normal" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#666666"
+        android:background="#FF0000"
         android:orientation="horizontal" />
 
-</LinearLayout>
+</merge>
