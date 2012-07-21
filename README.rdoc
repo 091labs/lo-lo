@@ -20,9 +20,9 @@ and all creative ideas.
 
 == Authors
 
-<b>Android:</b> Carles Sentis
-<b>Art design:</b>  Darren Kearney
-<b>Server:<b> Padraic Harley
+* <b>Android:</b> Carles Sentis
+* <b>Art design:</b>  Darren Kearney
+* <b>Server:</b> Padraic Harley
 
 == Install
 
