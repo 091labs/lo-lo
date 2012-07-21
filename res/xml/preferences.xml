@@ -2,6 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="@string/prefsCat_General" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="chkSync"
+            android:title="@string/prefsSync_title" />
+
         <ListPreference
             android:defaultValue="0"
             android:dialogTitle="@string/prefsOnClick_dialogTitle"
@@ -11,9 +16,9 @@
             android:title="@string/prefsOnClick_title" />
 
         <EditTextPreference
+            android:defaultValue="@string/prefsURL_default"
             android:key="eURL"
-            android:title="@string/prefsURL_title"
-            android:defaultValue="@string/prefsURL_default" />
+            android:title="@string/prefsURL_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefsCat_Info" >
         <Preference

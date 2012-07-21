@@ -1,3 +1,24 @@
+/*
+ * lo-lo Copyright (C) 091 Labs 2012 info@091labs.com
+ *
+ * lo-lo is free software: you can
+ * redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later
+ * version.
+
+ * lo-lo is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+
+ * You should have received a copy of the GNU
+ * General Public License along with this program.
+ * If not, see http://www.gnu.org/licenses.
+ */
+
 package com.codeskraps.lolo;
 
 import android.appwidget.AppWidgetManager;
@@ -5,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
@@ -22,10 +44,13 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 	public static final String FORCE_WIDGET_UPDATE = "com.codeskraps.lolo.FORCE_WIDGET_UPDATE";
 	public static final String ONCLICK = "lstOnClick";
 	public static final String EURL = "eURL";
+	public static final String LAST_SYNC = "sync";
+	public static final String SHOW_SYNC = "chkSync";
 
 	private SharedPreferences prefs = null;
 	private ListPreference lstOnClick = null;
 	private EditTextPreference eURL = null;
+	private CheckBoxPreference chkSync = null;
 	private String[] entries_OnClick = null;
 
 	@Override
@@ -43,6 +68,13 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 
 		lstOnClick = (ListPreference) findPreference(ONCLICK);
 		eURL = (EditTextPreference) findPreference(EURL);
+		chkSync = (CheckBoxPreference) findPreference(SHOW_SYNC);
+		
+		String lstSync = prefs.getString(LAST_SYNC, null);
+		if (lstSync == null)
+			chkSync.setSummary(getString(R.string.prefsSync_summarNot));
+		else
+			chkSync.setSummary(lstSync);
 	}
 
 	@Override

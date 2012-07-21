@@ -20,15 +20,20 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/imgLolo"
         android:gravity="center_horizontal"
-        android:typeface="monospace"
         android:shadowColor="#000000"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
-        android:textColor="#FFFFFF" />
-    
-<!--     <ProgressBar  -->
-<!--         android:id="@+id/prgBar" -->
-<!--         /> -->
+        android:textColor="#FFFFFF"
+        android:typeface="monospace" />
+
+    <ProgressBar
+        android:id="@+id/prgBar"
+        style="@android:style/Widget.ProgressBar.Small"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

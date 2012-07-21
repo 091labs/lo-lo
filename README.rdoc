@@ -1,0 +1,69 @@
+= 091 Labs lo-lo
+
+* <b>Homepage:</b> 091labs.com
+* <b>Git:</b> https://github.com/091labs/lo-lo
+* <b>Author:</b> 091 Labs members
+* <b>License:</b> GNU GPL v3
+* <b>Latest Version:</b> 1.3
+* <b>Release Date:</b> 2012	
+
+== General Infromation
+
+This is a way for members and the general public when the Labs on or labs off
+
+091 Labs is a collaborative community space based in Galway City, Ireland. 
+It is a shared physical space for any and all creative projects: art, woodwork, 
+software, photography and electronics – to name but a few. Our aim is to 
+provide Galway with a place for people to work and collaborate on creative 
+projects, to learn and to share their knowledge. We welcome all skill levels 
+and all creative ideas.
+
+== Authors
+
+<b>Android:</b> Carles Sentis
+<b>Art design:</b>  Darren Kearney
+<b>Server:<b> Padraic Harley
+
+== Install
+
+Install from Google Play
+
+* http://play.google.com/store/apps/details?id=com.codeskraps.lolo
+
+== ChangeLog
+
+<b>v1.3</b> 
+* Added the option to enable/disable last sync display
+* Added a progress display while synchronizing
+
+<b>v1.2</b>
+* Added on touch event
+* Added last synch
+
+<b>v1.1</b> 
+* Fixed crashes for devices using 3+ (Honey comb)
+* Update changed to 15 minutes
+
+<b>v1.0</b>
+* First official release
+
+== Copyright/License
+
+lo-lo Copyright (C) 091 Labs 2012 info@091labs.com
+
+lo-lo is free software: you can
+redistribute it and/or modify it under the terms
+of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of
+the License, or (at your option) any later
+version.
+
+lo-lo is distributed in the hope that it
+will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU
+General Public License along with this program.
+If not, see http://www.gnu.org/licenses.
