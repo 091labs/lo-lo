@@ -35,10 +35,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class PrefsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener, OnPreferenceClickListener {
 	private static final String TAG = PrefsActivity.class.getSimpleName();
@@ -50,6 +46,7 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 	public static final String SHOW_SYNC = "chkSync";
 	public static final String HOUR24 = "chk24";
 	public static final String ABOUT = "prefAbout";
+	public static final String FIRST_LAUNCH = "firstLaunch";
 
 	private SharedPreferences prefs = null;
 	private ListPreference lstOnClick = null;
@@ -85,6 +82,8 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 	protected void onResume() {
 		super.onResume();
 
+		prefs.registerOnSharedPreferenceChangeListener(this);
+		
 		String lstSync = prefs.getString(LAST_SYNC, null);
 		if (lstSync == null)
 			chkSync.setSummary(getString(R.string.prefsSync_summarNot));
@@ -107,6 +106,13 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 
 		if (action != 3)
 			eURL.setEnabled(false);
+		
+		if (prefs.getBoolean(FIRST_LAUNCH, true)) {
+			startActivity(new Intent(this, AboutActivity.class));
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean(FIRST_LAUNCH, false);
+			editor.commit();
+		}
 	}
 
 	@Override

@@ -21,9 +21,6 @@
 
 package com.codeskraps.lolo;
 
-import java.util.Calendar;
-
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -52,8 +49,8 @@ public class LoloProvider extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 		if (BuildConfig.DEBUG == true)
 			Log.d(TAG, "onReceive");
-		final String action = intent.getAction();
 
+		final String action = intent.getAction();
 		if (action.equals(FORCE_WIDGET_UPDATE))
 			updateWidget(context);
 
@@ -78,7 +75,6 @@ public class LoloProvider extends AppWidgetProvider {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
 		Intent serviceIntent = new Intent(context, UpdateWidgetService.class);
-		serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 
 		Intent intent = null;
 		PendingIntent pendingIntent = null;
@@ -94,13 +90,16 @@ public class LoloProvider extends AppWidgetProvider {
 				intent = new Intent("com.codeskraps.lol.DO_NOTHING");
 				pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 				break;
+
 			case 1:
 				pendingIntent = PendingIntent.getService(context, 0, serviceIntent, 0);
 				break;
+
 			case 2:
 				intent = new Intent(context, PrefsActivity.class);
 				pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 				break;
+
 			case 3:
 				intent = new Intent(Intent.ACTION_VIEW);
 				String url = prefs.getString(PrefsActivity.EURL,

@@ -26,16 +26,14 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.codeskraps.lolo.RSSXmlParser.Entry;
-
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +44,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import com.codeskraps.lolo.RSSXmlParser.Entry;
 
 public class UpdateWidgetService extends Service {
 	private static final String TAG = UpdateWidgetService.class.getSimpleName();
@@ -72,26 +72,24 @@ public class UpdateWidgetService extends Service {
 		handler = new Handler();
 
 		if (Utils.isNetworkAvailable(getApplicationContext())) {
-			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context
-					.getApplicationContext());
+			ComponentName provider = new ComponentName(context, LoloProvider.class);
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+			int[] appWidgets = appWidgetManager.getAppWidgetIds(provider);
 
-			int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
-
-			if (appWidgetIds.length > 0) {
-				for (int widgetId : appWidgetIds) {
+			if (appWidgets.length > 0) {
+				for (int widgetId : appWidgets) {
 					RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 							R.layout.widget);
 					remoteViews.setViewVisibility(R.id.prgBar, View.VISIBLE);
 					appWidgetManager.updateAppWidget(widgetId, remoteViews);
 				}
-			} else {
+			} else
 				Log.d(TAG, "No widgets installed");
-			}
 
 			downloadThread = new MyThread();
 			downloadThread.start();
 
-//			new DownloadXmlTask().execute();
+			// new DownloadXmlTask().execute();
 		} else {
 			Log.d(TAG, "No network connection");
 		}
@@ -106,22 +104,22 @@ public class UpdateWidgetService extends Service {
 		public void run() {
 			try {
 				lolo = Utils.getLolo();
-				handler.post(new MyRunnable());
 			} catch (IOException e) {
 				Log.e(TAG, e.getMessage());
+			} finally {
+				handler.post(new MyRunnable());
 			}
 		}
 	}
 
 	static private class MyRunnable implements Runnable {
 		public void run() {
-			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context
-					.getApplicationContext());
+			ComponentName provider = new ComponentName(context, LoloProvider.class);
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+			int[] appWidgets = appWidgetManager.getAppWidgetIds(provider);
 
-			int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
-
-			if (appWidgetIds.length > 0) {
-				for (int widgetId : appWidgetIds) {
+			if (appWidgets.length > 0) {
+				for (int widgetId : appWidgets) {
 
 					RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 							R.layout.widget);

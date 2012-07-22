@@ -33,7 +33,7 @@
     <string name="prefsURL_summary">Set a Custom URL -</string>
     <string name="prefsURL_default">091labs.com</string>
     <string name="prefsCat_Info">Information</string>
-    <string name="prefsInfo_Title">091 Labs lo-lo v1.4</string>
+    <string name="prefsInfo_Title">091 Labs lo-lo v1.7</string>
     <string name="prefsInfo_summary">GNU GPL License v3 - 2012</string>
 
     <!-- About -->
