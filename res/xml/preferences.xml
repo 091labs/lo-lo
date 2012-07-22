@@ -6,6 +6,10 @@
             android:defaultValue="true"
             android:key="chkSync"
             android:title="@string/prefsSync_title" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="chk24"
+            android:title="@string/prefs24_title" />
 
         <ListPreference
             android:defaultValue="0"
@@ -22,6 +26,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefsCat_Info" >
         <Preference
+            android:key="prefAbout"
             android:summary="@string/prefsInfo_summary"
             android:title="@string/prefsInfo_Title" />
     </PreferenceCategory>

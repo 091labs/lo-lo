@@ -21,6 +21,9 @@
 
 package com.codeskraps.lolo;
 
+import java.util.Calendar;
+
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -39,14 +42,16 @@ public class LoloProvider extends AppWidgetProvider {
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		Log.d(TAG, "onUpdate");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "onUpdate");
 		updateWidget(context);
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d(TAG, "onReceive");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "onReceive");
 		final String action = intent.getAction();
 
 		if (action.equals(FORCE_WIDGET_UPDATE))
@@ -56,7 +61,9 @@ public class LoloProvider extends AppWidgetProvider {
 	}
 
 	public void updateWidget(Context context) {
-		Log.d(TAG, "updateWidget");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "updateWidget");
+
 		ComponentName thisWidget = new ComponentName(context, LoloProvider.class);
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
@@ -64,7 +71,9 @@ public class LoloProvider extends AppWidgetProvider {
 	}
 
 	private void updateWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		Log.d(TAG, "updateWidget2");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "updateWidget2");
+
 		final int N = appWidgetIds.length;
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 

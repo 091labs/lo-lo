@@ -23,7 +23,10 @@ package com.codeskraps.lolo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -32,11 +35,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.util.Xml;
 
 public class Utils {
 	private static final String TAG = Utils.class.getSimpleName();
@@ -51,7 +57,7 @@ public class Utils {
 		}
 		return false;
 	}
-	
+
 	public static boolean getLolo() throws IOException {
 		long startTime = System.currentTimeMillis();
 		Log.d(TAG, "download begining");
@@ -64,24 +70,21 @@ public class Utils {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
 				.getContent(), "UTF-8"));
 		String json = reader.readLine();
-//		Log.d(TAG, "json: " + json);
+		reader.close();
+		
 		JSONTokener tokener = new JSONTokener(json);
 
-		String lolo = null;
+		boolean lolo = false;
 		try {
 			JSONObject finalResult = new JSONObject(tokener);
-			lolo = finalResult.getString("open");
-			Log.d(TAG, "lolo: " + lolo);
+			lolo = Boolean.getBoolean(finalResult.getString("open"));
+			// Log.d(TAG, "lolo: " + lolo);
 		} catch (JSONException e) {
 			Log.e(TAG, e.getMessage());
 		}
 
-		Log.d(TAG, "download ready in "
-				+ ((System.currentTimeMillis() - startTime) / 1000) + " sec");
-
-		if (lolo.equals("true")) {
-			return true;
-		} else
-			return false;
+		Log.d(TAG, "download ready in " + ((System.currentTimeMillis() - startTime) / 1000)
+				+ " sec");
+		return lolo;
 	}
 }

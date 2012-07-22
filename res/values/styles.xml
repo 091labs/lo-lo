@@ -2,4 +2,12 @@
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
+    <drawable name="transparent_background">#DD000000</drawable>
+
+    <style name="Theme.Translucent" parent="android:style/Theme.Translucent">
+        <item name="android:windowBackground">@drawable/transparent_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorForeground">#fff</item>
+    </style>
+
 </resources>

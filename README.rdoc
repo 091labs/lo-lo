@@ -4,7 +4,7 @@
 * <b>Git:</b> https://github.com/091labs/lo-lo
 * <b>Author:</b> 091 Labs members
 * <b>License:</b> GNU GPL v3
-* <b>Latest Version:</b> 1.3
+* <b>Latest Version:</b> 1.4
 * <b>Release Date:</b> 2012	
 
 == General Infromation
@@ -31,6 +31,10 @@ Install from Google Play
 * http://play.google.com/store/apps/details?id=com.codeskraps.lolo
 
 == ChangeLog
+
+<b>v1.4</b>
+* New super awesome about page
+* Added show 24-hour setting
 
 <b>v1.3</b> 
 * Added the option to enable/disable last sync display

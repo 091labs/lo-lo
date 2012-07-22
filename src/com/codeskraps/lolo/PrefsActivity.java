@@ -29,6 +29,8 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -38,7 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
-public class PrefsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class PrefsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener, OnPreferenceClickListener {
 	private static final String TAG = PrefsActivity.class.getSimpleName();
 	private static String CONFIGURE_ACTION = "android.appwidget.action.APPWIDGET_CONFIGURE";
 	public static final String FORCE_WIDGET_UPDATE = "com.codeskraps.lolo.FORCE_WIDGET_UPDATE";
@@ -46,18 +48,22 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 	public static final String EURL = "eURL";
 	public static final String LAST_SYNC = "sync";
 	public static final String SHOW_SYNC = "chkSync";
+	public static final String HOUR24 = "chk24";
+	public static final String ABOUT = "prefAbout";
 
 	private SharedPreferences prefs = null;
 	private ListPreference lstOnClick = null;
 	private EditTextPreference eURL = null;
 	private CheckBoxPreference chkSync = null;
+	private CheckBoxPreference chk24 = null;
 	private String[] entries_OnClick = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.d(TAG, "onCreate");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		
+
 		addPreferencesFromResource(R.xml.preferences);
 		setContentView(R.layout.prefs);
 
@@ -69,17 +75,27 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		lstOnClick = (ListPreference) findPreference(ONCLICK);
 		eURL = (EditTextPreference) findPreference(EURL);
 		chkSync = (CheckBoxPreference) findPreference(SHOW_SYNC);
+		chk24 = (CheckBoxPreference) findPreference(HOUR24);
+		Preference prefAbout = (Preference) findPreference(ABOUT);
 		
-		String lstSync = prefs.getString(LAST_SYNC, null);
-		if (lstSync == null)
-			chkSync.setSummary(getString(R.string.prefsSync_summarNot));
-		else
-			chkSync.setSummary(lstSync);
+		prefAbout.setOnPreferenceClickListener(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		String lstSync = prefs.getString(LAST_SYNC, null);
+		if (lstSync == null)
+			chkSync.setSummary(getString(R.string.prefsSync_summarNot));
+		else
+			chkSync.setSummary(lstSync);
+
+		boolean hour24 = prefs.getBoolean(HOUR24, true);
+		if (hour24)
+			chk24.setSummary(getString(R.string.prefs24_summaryTwo));
+		else
+			chk24.setSummary(getString(R.string.prefs24_summaryOne));
 
 		String onClick = prefs.getString(ONCLICK, entries_OnClick[0]);
 		int action = Integer.parseInt(onClick);
@@ -95,15 +111,25 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 
 	@Override
 	protected void onPause() {
-		Log.d(TAG, "onPause");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "onPause");
 		super.onPause();
 		prefs.unregisterOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		Log.d(TAG, "onSharedPreferenceChanged");
-		if (key.equals(ONCLICK)) {
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "onSharedPreferenceChanged");
+
+		if (key.equals(HOUR24)) {
+			boolean hour24 = prefs.getBoolean(HOUR24, true);
+			if (hour24)
+				chk24.setSummary(getString(R.string.prefs24_summaryTwo));
+			else
+				chk24.setSummary(getString(R.string.prefs24_summaryOne));
+
+		} else if (key.equals(ONCLICK)) {
 			String onClick = prefs.getString(ONCLICK, entries_OnClick[0]);
 			int action = Integer.parseInt(onClick);
 			lstOnClick.setSummary(entries_OnClick[action]);
@@ -121,7 +147,9 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		Log.d(TAG, "onKeyDown");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "onKeyDown");
+
 		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR
 				&& keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			// Take care of calling this method on earlier versions of
@@ -138,14 +166,16 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		// This will be called either automatically for you on 2.0
 		// or later, or by the code above on earlier versions of the
 		// platform.
-		Log.d(TAG, "onBackPressed");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "onBackPressed");
 		resultIntent();
 		finish();
 		return;
 	}
 
 	private void resultIntent() {
-		Log.d(TAG, "resultIntent");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "resultIntent");
 
 		if (CONFIGURE_ACTION.equals(getIntent().getAction())) {
 			Intent intent = getIntent();
@@ -160,5 +190,13 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 			}
 		}
 		sendBroadcast(new Intent(FORCE_WIDGET_UPDATE));
+	}
+
+	@Override
+	public boolean onPreferenceClick(Preference pref) {
+		if (pref.getKey().equals(ABOUT)) {
+			startActivity(new Intent(this, AboutActivity.class));
+		}
+		return false;
 	}
 }

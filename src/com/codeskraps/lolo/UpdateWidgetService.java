@@ -22,14 +22,24 @@
 package com.codeskraps.lolo;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import com.codeskraps.lolo.RSSXmlParser.Entry;
 
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -53,10 +63,12 @@ public class UpdateWidgetService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(TAG, "onStartCommand");
+		if (BuildConfig.DEBUG == true)
+			Log.d(TAG, "onStartCommand");
 
-		UpdateWidgetService.context = getApplicationContext();
 		UpdateWidgetService.intent = intent;
+		UpdateWidgetService.context = getApplicationContext();
+
 		handler = new Handler();
 
 		if (Utils.isNetworkAvailable(getApplicationContext())) {
@@ -78,6 +90,8 @@ public class UpdateWidgetService extends Service {
 
 			downloadThread = new MyThread();
 			downloadThread.start();
+
+//			new DownloadXmlTask().execute();
 		} else {
 			Log.d(TAG, "No network connection");
 		}
@@ -87,7 +101,7 @@ public class UpdateWidgetService extends Service {
 		return super.onStartCommand(intent, flags, startId);
 	}
 
-	static public class MyThread extends Thread {
+	static private class MyThread extends Thread {
 		@Override
 		public void run() {
 			try {
@@ -121,8 +135,9 @@ public class UpdateWidgetService extends Service {
 					}
 
 					Calendar c = Calendar.getInstance();
-					
-					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+					SharedPreferences prefs = PreferenceManager
+							.getDefaultSharedPreferences(context);
 					SharedPreferences.Editor editor = prefs.edit();
 					editor.putString(PrefsActivity.LAST_SYNC, DateFormat.getDateTimeInstance()
 							.format(c.getTime()));
@@ -130,10 +145,19 @@ public class UpdateWidgetService extends Service {
 
 					boolean showSync = prefs.getBoolean(PrefsActivity.SHOW_SYNC, true);
 					if (showSync) {
-						String hours = new String("");
-						if (c.get(Calendar.HOUR_OF_DAY) < 10)
-							hours += "0";
-						hours += c.get(Calendar.HOUR_OF_DAY);
+						boolean hour24 = prefs.getBoolean(PrefsActivity.HOUR24, true);
+						String hours = new String();
+						if (hour24) {
+							hours = new String("");
+							if (c.get(Calendar.HOUR_OF_DAY) < 10)
+								hours += "0";
+							hours += c.get(Calendar.HOUR_OF_DAY);
+						} else {
+							hours = new String("");
+							if (c.get(Calendar.HOUR) < 10)
+								hours += "0";
+							hours += c.get(Calendar.HOUR);
+						}
 
 						String minutes = new String("");
 						if (c.get(Calendar.MINUTE) < 10)
@@ -147,14 +171,76 @@ public class UpdateWidgetService extends Service {
 					} else {
 						remoteViews.setViewVisibility(R.id.txtSync, View.GONE);
 					}
-					
+
 					remoteViews.setViewVisibility(R.id.prgBar, View.GONE);
-					
+
 					appWidgetManager.updateAppWidget(widgetId, remoteViews);
 				}
 			} else {
 				Log.d(TAG, "No widgets installed");
 			}
 		}
+	}
+
+	// Implementation of AsyncTask used to download XML feed from
+	// stackoverflow.com.
+	private class DownloadXmlTask extends AsyncTask<String, Void, String> {
+
+		@Override
+		protected String doInBackground(String... urls) {
+			try {
+				return loadXmlFromNetwork("http://stackoverflow.com/feeds/tag?tagnames=android&sort=newest");
+			} catch (IOException e) {
+				return e.getMessage();
+			} catch (XmlPullParserException e) {
+				return e.getMessage();
+			}
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			Log.d(TAG, result);
+		}
+	}
+
+	// Uploads XML from stackoverflow.com, parses it, and combines it with
+	// HTML markup. Returns HTML string.
+	private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
+		InputStream stream = null;
+		RSSXmlParser rssXmlParser = new RSSXmlParser();
+		List<Entry> entries = null;
+
+		try {
+			stream = downloadUrl(urlString);
+			entries = rssXmlParser.parse(stream);
+			// Makes sure that the InputStream is closed after the app is
+			// finished using it.
+		} finally {
+			if (stream != null) {
+				stream.close();
+			}
+		}
+
+		// Each Entry object represents a single post in the XML feed.
+		// This section processes the entries list to combine each entry with
+		// HTML markup.
+		// Each entry is displayed in the UI as a link that optionally includes
+		// a text summary.
+		return entries.get(0).title;
+	}
+
+	// Given a string representation of a URL, sets up a connection and gets
+	// an input stream.
+	private InputStream downloadUrl(String urlString) throws IOException {
+		URL url = new URL(urlString);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setReadTimeout(10000 /* milliseconds */);
+		conn.setConnectTimeout(15000 /* milliseconds */);
+		conn.setRequestMethod("GET");
+		conn.setDoInput(true);
+		// Starts the query
+		conn.connect();
+		InputStream stream = conn.getInputStream();
+		return stream;
 	}
 }

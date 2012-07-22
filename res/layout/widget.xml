@@ -9,23 +9,11 @@
         android:id="@+id/imgLolo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:contentDescription="@string/contentDescription"
         android:padding="15dip"
         android:src="@drawable/closed" />
-
-    <TextView
-        android:id="@+id/txtSync"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imgLolo"
-        android:gravity="center_horizontal"
-        android:shadowColor="#000000"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="1"
-        android:textColor="#FFFFFF"
-        android:typeface="monospace" />
 
     <ProgressBar
         android:id="@+id/prgBar"
@@ -35,5 +23,18 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtSync"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:textColor="#FFFFFF"
+        android:typeface="monospace" />
 
 </RelativeLayout>
