@@ -36,29 +36,23 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
-public class PrefsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener, OnPreferenceClickListener {
+public class PrefsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener,
+		OnPreferenceClickListener {
 	private static final String TAG = PrefsActivity.class.getSimpleName();
-	private static String CONFIGURE_ACTION = "android.appwidget.action.APPWIDGET_CONFIGURE";
-	public static final String FORCE_WIDGET_UPDATE = "com.codeskraps.lolo.FORCE_WIDGET_UPDATE";
-	public static final String ONCLICK = "lstOnClick";
-	public static final String EURL = "eURL";
-	public static final String LAST_SYNC = "sync";
-	public static final String SHOW_SYNC = "chkSync";
-	public static final String HOUR24 = "chk24";
-	public static final String ABOUT = "prefAbout";
-	public static final String FIRST_LAUNCH = "firstLaunch";
 
 	private SharedPreferences prefs = null;
 	private ListPreference lstOnClick = null;
 	private EditTextPreference eURL = null;
 	private CheckBoxPreference chkSync = null;
 	private CheckBoxPreference chk24 = null;
+	private ListPreference lstInterval = null;
+
 	private String[] entries_OnClick = null;
+	private String[] entries_Interval = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "onCreate");
+		if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
 		addPreferencesFromResource(R.xml.preferences);
@@ -68,13 +62,15 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		prefs.registerOnSharedPreferenceChangeListener(this);
 
 		entries_OnClick = getResources().getStringArray(R.array.OnClick_entries);
+		entries_Interval = getResources().getStringArray(R.array.interval_entries);
 
-		lstOnClick = (ListPreference) findPreference(ONCLICK);
-		eURL = (EditTextPreference) findPreference(EURL);
-		chkSync = (CheckBoxPreference) findPreference(SHOW_SYNC);
-		chk24 = (CheckBoxPreference) findPreference(HOUR24);
-		Preference prefAbout = (Preference) findPreference(ABOUT);
-		
+		lstOnClick = (ListPreference) findPreference(Constants.ONCLICK);
+		eURL = (EditTextPreference) findPreference(Constants.EURL);
+		chkSync = (CheckBoxPreference) findPreference(Constants.SHOW_SYNC);
+		chk24 = (CheckBoxPreference) findPreference(Constants.HOUR24);
+		lstInterval = (ListPreference) findPreference(Constants.INTERVAL);
+		Preference prefAbout = (Preference) findPreference(Constants.ABOUT);
+
 		prefAbout.setOnPreferenceClickListener(this);
 	}
 
@@ -83,78 +79,76 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		super.onResume();
 
 		prefs.registerOnSharedPreferenceChangeListener(this);
-		
-		String lstSync = prefs.getString(LAST_SYNC, null);
-		if (lstSync == null)
-			chkSync.setSummary(getString(R.string.prefsSync_summarNot));
-		else
-			chkSync.setSummary(lstSync);
 
-		boolean hour24 = prefs.getBoolean(HOUR24, true);
-		if (hour24)
-			chk24.setSummary(getString(R.string.prefs24_summaryTwo));
-		else
-			chk24.setSummary(getString(R.string.prefs24_summaryOne));
+		String lstSync = prefs.getString(Constants.LAST_SYNC, null);
+		if (lstSync == null) chkSync.setSummary(getString(R.string.prefsSync_summarNot));
+		else chkSync.setSummary(lstSync);
 
-		String onClick = prefs.getString(ONCLICK, entries_OnClick[0]);
+		boolean hour24 = prefs.getBoolean(Constants.HOUR24, true);
+		if (hour24) chk24.setSummary(getString(R.string.prefs24_summaryTwo));
+		else chk24.setSummary(getString(R.string.prefs24_summaryOne));
+
+		String onClick = prefs.getString(Constants.ONCLICK, "0");
 		int action = Integer.parseInt(onClick);
 		lstOnClick.setSummary(entries_OnClick[action]);
 
-		String url = prefs.getString(EURL, getString(R.string.prefsURL_default));
+		String url = prefs.getString(Constants.EURL, getString(R.string.prefsURL_default));
 		String urlSummary = String.format("%s %s", getString(R.string.prefsURL_summary), url);
 		eURL.setSummary(urlSummary);
 
-		if (action != 3)
-			eURL.setEnabled(false);
-		
-		if (prefs.getBoolean(FIRST_LAUNCH, true)) {
+		String intervalString = prefs.getString(Constants.INTERVAL, "1");
+		int interval = Integer.parseInt(intervalString);
+		lstInterval.setSummary(entries_Interval[interval]);
+
+		if (action != 3) eURL.setEnabled(false);
+
+		if (prefs.getBoolean(Constants.FIRST_LAUNCH, true)) {
 			startActivity(new Intent(this, AboutActivity.class));
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putBoolean(FIRST_LAUNCH, false);
+			editor.putBoolean(Constants.FIRST_LAUNCH, false);
 			editor.commit();
 		}
 	}
 
 	@Override
 	protected void onPause() {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "onPause");
+		if (BuildConfig.DEBUG) Log.d(TAG, "onPause");
 		super.onPause();
 		prefs.unregisterOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "onSharedPreferenceChanged");
+		if (BuildConfig.DEBUG) Log.d(TAG, "onSharedPreferenceChanged");
 
-		if (key.equals(HOUR24)) {
-			boolean hour24 = prefs.getBoolean(HOUR24, true);
-			if (hour24)
-				chk24.setSummary(getString(R.string.prefs24_summaryTwo));
-			else
-				chk24.setSummary(getString(R.string.prefs24_summaryOne));
+		if (key.equals(Constants.HOUR24)) {
+			boolean hour24 = prefs.getBoolean(Constants.HOUR24, true);
+			if (hour24) chk24.setSummary(getString(R.string.prefs24_summaryTwo));
+			else chk24.setSummary(getString(R.string.prefs24_summaryOne));
 
-		} else if (key.equals(ONCLICK)) {
-			String onClick = prefs.getString(ONCLICK, entries_OnClick[0]);
+		} else if (key.equals(Constants.ONCLICK)) {
+			String onClick = prefs.getString(Constants.ONCLICK, "0");
 			int action = Integer.parseInt(onClick);
 			lstOnClick.setSummary(entries_OnClick[action]);
 
-			if (action != 3)
-				eURL.setEnabled(false);
-			else
-				eURL.setEnabled(true);
-		} else if (key.equals(EURL)) {
-			String url = prefs.getString(EURL, getString(R.string.prefsURL_default));
+			if (action != 3) eURL.setEnabled(false);
+			else eURL.setEnabled(true);
+
+		} else if (key.equals(Constants.EURL)) {
+			String url = prefs.getString(Constants.EURL, getString(R.string.prefsURL_default));
 			String urlSummary = String.format("%s %s", getString(R.string.prefsURL_summary), url);
 			eURL.setSummary(urlSummary);
+
+		} else if (key.equals(Constants.INTERVAL)) {
+			String intervalString = prefs.getString(Constants.INTERVAL, "1");
+			int interval = Integer.parseInt(intervalString);
+			lstInterval.setSummary(entries_Interval[interval]);
 		}
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "onKeyDown");
+		if (BuildConfig.DEBUG) Log.d(TAG, "onKeyDown");
 
 		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR
 				&& keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -172,18 +166,16 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		// This will be called either automatically for you on 2.0
 		// or later, or by the code above on earlier versions of the
 		// platform.
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "onBackPressed");
+		if (BuildConfig.DEBUG) Log.d(TAG, "onBackPressed");
 		resultIntent();
 		finish();
 		return;
 	}
 
 	private void resultIntent() {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "resultIntent");
+		if (BuildConfig.DEBUG) Log.d(TAG, "resultIntent");
 
-		if (CONFIGURE_ACTION.equals(getIntent().getAction())) {
+		if (Constants.CONFIGURE_ACTION.equals(getIntent().getAction())) {
 			Intent intent = getIntent();
 			Bundle extras = intent.getExtras();
 			if (extras != null) {
@@ -195,12 +187,12 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 				setResult(RESULT_OK, result);
 			}
 		}
-		sendBroadcast(new Intent(FORCE_WIDGET_UPDATE));
+		sendBroadcast(new Intent(Constants.FORCE_WIDGET_UPDATE));
 	}
 
 	@Override
 	public boolean onPreferenceClick(Preference pref) {
-		if (pref.getKey().equals(ABOUT)) {
+		if (pref.getKey().equals(Constants.ABOUT)) {
 			startActivity(new Intent(this, AboutActivity.class));
 		}
 		return false;

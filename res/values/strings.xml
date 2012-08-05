@@ -7,11 +7,14 @@
 
     <!-- Preference Activity -->
     <string name="prefsCat_General">General</string>
+    
     <string name="prefsSync_title">Show last sync time</string>
     <string name="prefsSync_summarNot">Not yet synced!</string>
+    
     <string name="prefs24_title">Use 24-hour format</string>
     <string name="prefs24_summaryOne">01:00 pm</string>
     <string name="prefs24_summaryTwo">13:00</string>
+    
     <string name="prefsOnClick_title">On touch action</string>
     <string name="prefsOnClick_dialogTitle">On touch action</string>
     <string name="prefsOnClick_summary">Choose what should be done when you touch the widget -</string>
@@ -32,8 +35,26 @@
     <string name="prefsURL_title">URL</string>
     <string name="prefsURL_summary">Set a Custom URL -</string>
     <string name="prefsURL_default">091labs.com</string>
+    
+    <string name="prefsInterval_title">Interval update</string>
+    <string name="prefsInterval_dialogTitle">Interval update</string>
+    
+    <string-array name="interval_entries">
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>Half hour</item>
+        <item>An hour</item>
+    </string-array>
+    <string-array name="interval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    
     <string name="prefsCat_Info">Information</string>
-    <string name="prefsInfo_Title">091 Labs lo-lo v1.7</string>
+    
+    <string name="prefsInfo_Title">091 Labs lo-lo v1.8</string>
     <string name="prefsInfo_summary">GNU GPL License v3 - 2012</string>
 
     <!-- About -->

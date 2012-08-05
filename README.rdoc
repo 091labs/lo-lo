@@ -4,7 +4,7 @@
 * <b>Git:</b> https://github.com/091labs/lo-lo
 * <b>Author:</b> 091 Labs members
 * <b>License:</b> GNU GPL v3
-* <b>Latest Version:</b> 1.7
+* <b>Latest Version:</b> 1.8
 * <b>Release Date:</b> 2012	
 
 == General Infromation
@@ -32,9 +32,12 @@ Install from Google Play
 
 == ChangeLog
 
+<b>v1.8</b>
+* Added - Custom interval update
+
 <b>v1.7</b>
-* Fix bug - Widget views not updating from pedingIntent
-* Fix bug - Connection time out view update
+* Bug fixed - Widget views not updating from pedingIntent
+* Bug fixed - Connection time out view update
 
 <b>v1.6</b>
 * Bug fixed - onSharedPreferenceChanged not fired

@@ -21,6 +21,7 @@
 
 package com.codeskraps.lolo;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -28,93 +29,73 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 public class LoloProvider extends AppWidgetProvider {
 	private static final String TAG = LoloProvider.class.getSimpleName();
-	public static final String FORCE_WIDGET_UPDATE = "com.codeskraps.lolo.FORCE_WIDGET_UPDATE";
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "onUpdate");
+		if (BuildConfig.DEBUG) Log.d(TAG, "onUpdate");
 		updateWidget(context);
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "onReceive");
-
+		if (BuildConfig.DEBUG) Log.d(TAG, "onReceive");
 		final String action = intent.getAction();
-		if (action.equals(FORCE_WIDGET_UPDATE))
-			updateWidget(context);
-
+		Log.d(TAG, "Action: " + action);
+		if (action.equals(Constants.FORCE_WIDGET_UPDATE)) updateWidget(context);
 		super.onReceive(context, intent);
 	}
 
 	public void updateWidget(Context context) {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "updateWidget");
+		if (BuildConfig.DEBUG) Log.d(TAG, "updateWidget");
 
 		ComponentName thisWidget = new ComponentName(context, LoloProvider.class);
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+
 		updateWidget(context, appWidgetManager, appWidgetIds);
 	}
 
 	private void updateWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		if (BuildConfig.DEBUG == true)
-			Log.d(TAG, "updateWidget2");
-
-		final int N = appWidgetIds.length;
+		if (BuildConfig.DEBUG) Log.d(TAG, "updateWidget2");
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-		Intent serviceIntent = new Intent(context, UpdateWidgetService.class);
-
-		Intent intent = null;
-		PendingIntent pendingIntent = null;
-
-		int onClick = Integer.parseInt(prefs.getString(PrefsActivity.ONCLICK, "0"));
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 
-		for (int i = 0; i < N; i++) {
-			int appWidgetId = appWidgetIds[i];
+		if (appWidgetIds.length > 0) {
+			for (int appWidgetId : appWidgetIds) {
 
-			switch (onClick) {
-			case 0:
-				intent = new Intent("com.codeskraps.lol.DO_NOTHING");
-				pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-				break;
-
-			case 1:
-				pendingIntent = PendingIntent.getService(context, 0, serviceIntent, 0);
-				break;
-
-			case 2:
-				intent = new Intent(context, PrefsActivity.class);
-				pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-				break;
-
-			case 3:
-				intent = new Intent(Intent.ACTION_VIEW);
-				String url = prefs.getString(PrefsActivity.EURL,
-						context.getString(R.string.prefsURL_default));
-				if (!url.startsWith("http://"))
-					url = "http://" + url;
-				intent.setData(Uri.parse(url));
-				pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-				break;
+				remoteViews.setOnClickPendingIntent(R.id.imgLolo, Utils.getOnTouchIntent(context));
+				appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 			}
-			remoteViews.setOnClickPendingIntent(R.id.imgLolo, pendingIntent);
-			appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 		}
 
-		// Update the widgets via the service
-		context.startService(serviceIntent);
+		Intent broadcastIntent = new Intent();
+		broadcastIntent.setAction(Constants.BROADCAST_RECEIVER);
+		PendingIntent pi = PendingIntent.getBroadcast(context, 0, broadcastIntent, 0);
+
+		String intervalString = prefs.getString(Constants.INTERVAL, "1");
+		int intervalEntry = Integer.parseInt(intervalString);
+
+//		@formatter:off
+		int interval = 0;
+		switch(intervalEntry){
+		case 0: interval = 5; break;
+		case 1: interval = 15; break;
+		case 2: interval = 30; break;
+		case 3: interval = 60; break;
+		}
+//		@formatter:on
+
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + 1000 * 60
+				* interval, 1000 * 60 * interval, pi);
+
+		context.sendBroadcast(broadcastIntent);
 	}
 }

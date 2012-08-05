@@ -3,6 +3,8 @@
     android:initialLayout="@layout/widget"
     android:minHeight="72dip"
     android:minWidth="72dip"
-    android:updatePeriodMillis="180000"
     android:configure="com.codeskraps.lolo.PrefsActivity"
     android:previewImage="@drawable/open" />
+
+<!--     android:updatePeriodMillis="180000" -->
+    

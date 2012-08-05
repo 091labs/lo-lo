@@ -6,6 +6,7 @@
             android:defaultValue="true"
             android:key="chkSync"
             android:title="@string/prefsSync_title" />
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="chk24"
@@ -23,6 +24,14 @@
             android:defaultValue="@string/prefsURL_default"
             android:key="eURL"
             android:title="@string/prefsURL_title" />
+
+        <ListPreference
+            android:defaultValue="15"
+            android:dialogTitle="@string/prefsInterval_dialogTitle"
+            android:entries="@array/interval_entries"
+            android:entryValues="@array/interval_values"
+            android:key="lstInterval"
+            android:title="@string/prefsInterval_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefsCat_Info" >
         <Preference
