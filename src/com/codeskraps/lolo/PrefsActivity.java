@@ -122,8 +122,8 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		if (BuildConfig.DEBUG) Log.d(TAG, "onSharedPreferenceChanged");
 
 		if (key.equals(Constants.HOUR24)) {
-			boolean hour24 = prefs.getBoolean(Constants.HOUR24, true);
-			if (hour24) chk24.setSummary(getString(R.string.prefs24_summaryTwo));
+			if (prefs.getBoolean(Constants.HOUR24, true)) 
+				chk24.setSummary(getString(R.string.prefs24_summaryTwo));
 			else chk24.setSummary(getString(R.string.prefs24_summaryOne));
 
 		} else if (key.equals(Constants.ONCLICK)) {
@@ -157,7 +157,6 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 			Log.d(TAG, "SDK < Eclair");
 			onBackPressed();
 		}
-
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -192,9 +191,8 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 
 	@Override
 	public boolean onPreferenceClick(Preference pref) {
-		if (pref.getKey().equals(Constants.ABOUT)) {
+		if (pref.getKey().equals(Constants.ABOUT))
 			startActivity(new Intent(this, AboutActivity.class));
-		}
-		return false;
+		return true;
 	}
 }

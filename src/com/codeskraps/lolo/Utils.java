@@ -74,6 +74,7 @@ public class Utils {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
 				.getContent(), "UTF-8"));
 		String json = reader.readLine();
+		Log.d(TAG, json);
 		reader.close();
 
 		JSONTokener tokener = new JSONTokener(json);
@@ -81,7 +82,7 @@ public class Utils {
 		boolean lolo = false;
 		try {
 			JSONObject finalResult = new JSONObject(tokener);
-			lolo = Boolean.getBoolean(finalResult.getString("open"));
+			lolo = finalResult.getBoolean("open");
 			Log.d(TAG, "lolo: " + lolo);
 		} catch (JSONException e) {
 			Log.e(TAG, e.getMessage());
