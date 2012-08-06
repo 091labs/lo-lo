@@ -32,6 +32,9 @@ Install from Google Play
 
 == ChangeLog
 
+<b>v1.10</b>
+* Out of  bound exception fixed
+
 <b>v.1.9</>
 * On touch event stopped working after sometime has been fixed
 * Get lolo json parser been fixed

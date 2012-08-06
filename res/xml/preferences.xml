@@ -26,7 +26,7 @@
             android:title="@string/prefsURL_title" />
 
         <ListPreference
-            android:defaultValue="15"
+            android:defaultValue="1"
             android:dialogTitle="@string/prefsInterval_dialogTitle"
             android:entries="@array/interval_entries"
             android:entryValues="@array/interval_values"
