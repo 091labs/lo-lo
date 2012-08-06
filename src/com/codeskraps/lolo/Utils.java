@@ -92,14 +92,14 @@ public class Utils {
 				+ " sec");
 		return lolo;
 	}
-	
+
 	public static PendingIntent getOnTouchIntent(Context context) {
 		PendingIntent pendingIntent = null;
 		Intent intent = null;
-		
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		int onClick = Integer.parseInt(prefs.getString(Constants.ONCLICK, "0"));
-		
+
 		switch (onClick) {
 		case 0:
 			intent = new Intent("com.codeskraps.lol.DO_NOTHING");
