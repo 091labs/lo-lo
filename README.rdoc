@@ -4,7 +4,7 @@
 * <b>Git:</b> https://github.com/091labs/lo-lo
 * <b>Author:</b> 091 Labs members
 * <b>License:</b> GNU GPL v3
-* <b>Latest Version:</b> 1.9
+* <b>Latest Version:</b> 1.10
 * <b>Release Date:</b> 2012	
 
 == General Infromation
