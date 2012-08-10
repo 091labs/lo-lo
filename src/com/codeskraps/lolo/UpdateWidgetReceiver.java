@@ -2,12 +2,15 @@ package com.codeskraps.lolo;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.appwidget.AppWidgetManager;
@@ -66,8 +69,18 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 		public void run() {
 			try {
 				lolo = Utils.getLolo();
+			} catch (UnsupportedEncodingException e) {
+				if (e != null) Log.e(TAG, e.getMessage());
+			} catch (ClientProtocolException e) {
+				if (e != null) Log.e(TAG, e.getMessage());
 			} catch (IOException e) {
-				Log.e(TAG, e.getMessage());
+				if (e != null) Log.e(TAG, e.getMessage());
+			} catch (IllegalArgumentException e) {
+				if (e != null) Log.e(TAG, e.getMessage());
+			} catch (NullPointerException e) {
+				if (e != null) Log.e(TAG, e.getMessage());
+			} catch (JSONException e) {
+				if (e != null) Log.e(TAG, e.getMessage());
 			} finally {
 				handler.post(new MyRunnable());
 			}
@@ -118,7 +131,7 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 						if (c.get(Calendar.MINUTE) < 10) minutes += "0";
 						minutes += c.get(Calendar.MINUTE);
 
-						String lastSync = String.format("%s:%s\n", hours, minutes);
+						String lastSync = String.format("%s:%s", hours, minutes);
 						Log.d(TAG, "lastSnync:" + lastSync);
 						remoteViews.setTextViewText(R.id.txtSync, lastSync);
 						remoteViews.setViewVisibility(R.id.txtSync, View.VISIBLE);

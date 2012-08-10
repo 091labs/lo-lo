@@ -32,6 +32,11 @@ Install from Google Play
 
 == ChangeLog
 
+<b>v1.11</b>
+* ACRA - Crash report added
+* Small UI improvements
+* Improved error handling
+
 <b>v1.10</b>
 * Out of  bound exception fixed
 

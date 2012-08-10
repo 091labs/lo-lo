@@ -24,8 +24,10 @@ package com.codeskraps.lolo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -58,7 +60,8 @@ public class Utils {
 		return false;
 	}
 
-	public static boolean getLolo() throws IOException {
+	public static boolean getLolo() throws JSONException, IOException, IllegalArgumentException,
+			ClientProtocolException, NullPointerException, UnsupportedEncodingException {
 		long startTime = System.currentTimeMillis();
 		Log.d(TAG, "download begining");
 		Log.d(TAG, "download url:" + URL);
@@ -74,20 +77,16 @@ public class Utils {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
 				.getContent(), "UTF-8"));
 		String json = reader.readLine();
-		Log.d(TAG, json);
+		Log.d(TAG, "json: " + json);
 		reader.close();
 
 		JSONTokener tokener = new JSONTokener(json);
 
 		boolean lolo = false;
-		try {
-			JSONObject finalResult = new JSONObject(tokener);
-			lolo = finalResult.getBoolean("open");
-			Log.d(TAG, "lolo: " + lolo);
-		} catch (JSONException e) {
-			Log.e(TAG, e.getMessage());
-		}
+		JSONObject finalResult = new JSONObject(tokener);
+		lolo = finalResult.getBoolean("open");
 
+		Log.d(TAG, "lolo: " + lolo);
 		Log.d(TAG, "download ready in " + ((System.currentTimeMillis() - startTime) / 1000)
 				+ " sec");
 		return lolo;
