@@ -32,7 +32,6 @@ public class AboutActivity extends Activity implements OnClickListener {
 		sb.append("<font color='#AAAAAA'>Code:</font> https://github.com/091labs/lo-lo<br />");
 
 		txtContent.setText(Html.fromHtml(sb.toString()));
-
 	}
 
 	@Override

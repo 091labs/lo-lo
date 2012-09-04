@@ -55,13 +55,13 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 					remoteViews.setViewVisibility(R.id.prgBar, View.VISIBLE);
 					appWidgetManager.updateAppWidget(widgetId, remoteViews);
 				}
-			} else Log.d(TAG, "No widgets installed");
+			} else if (BuildConfig.DEBUG) Log.d(TAG, "No widgets installed");
 
 			downloadThread = new MyThread();
 			downloadThread.start();
 
 			// new DownloadXmlTask().execute();
-		} else Log.d(TAG, "No network connection");
+		} else if (BuildConfig.DEBUG) Log.d(TAG, "No network connection");
 	}
 
 	static private class MyThread extends Thread {
@@ -70,17 +70,17 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 			try {
 				lolo = Utils.getLolo();
 			} catch (UnsupportedEncodingException e) {
-				if (e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
 			} catch (ClientProtocolException e) {
-				if (e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
 			} catch (IOException e) {
-				if (e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
 			} catch (IllegalArgumentException e) {
-				if (e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
 			} catch (NullPointerException e) {
-				if (e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
 			} catch (JSONException e) {
-				if (e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
 			} finally {
 				handler.post(new MyRunnable());
 			}
@@ -116,13 +116,11 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 					boolean showSync = prefs.getBoolean(Constants.SHOW_SYNC, true);
 					if (showSync) {
 						boolean hour24 = prefs.getBoolean(Constants.HOUR24, true);
-						String hours = new String();
+						String hours = new String("");
 						if (hour24) {
-							hours = new String("");
 							if (c.get(Calendar.HOUR_OF_DAY) < 10) hours += "0";
 							hours += c.get(Calendar.HOUR_OF_DAY);
 						} else {
-							hours = new String("");
 							if (c.get(Calendar.HOUR) < 10) hours += "0";
 							hours += c.get(Calendar.HOUR);
 						}
@@ -143,7 +141,7 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 							Utils.getOnTouchIntent(context));
 					appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 				}
-			} else Log.d(TAG, "No widgets installed");
+			} else if (BuildConfig.DEBUG) Log.d(TAG, "No widgets installed");
 		}
 	}
 

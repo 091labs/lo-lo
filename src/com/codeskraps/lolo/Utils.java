@@ -50,28 +50,27 @@ import android.util.Log;
 
 public class Utils {
 	private static final String TAG = Utils.class.getSimpleName();
-	private static final String URL = "http://scruffy.091labs.com/lolo/json/status.json";
 
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-		if (networkInfo != null && networkInfo.isConnected()) { return true; }
+		if (networkInfo != null && networkInfo.isConnected()) return true;
 		return false;
 	}
 
-	public static boolean getLolo() throws JSONException, IOException, IllegalArgumentException,
-			ClientProtocolException, NullPointerException, UnsupportedEncodingException {
+	public static boolean getLolo() throws UnsupportedEncodingException, ClientProtocolException,
+			IOException, IllegalArgumentException, NullPointerException, JSONException {
 		long startTime = System.currentTimeMillis();
-		Log.d(TAG, "download begining");
-		Log.d(TAG, "download url:" + URL);
+		if (BuildConfig.DEBUG) Log.d(TAG, "download begining");
+		if (BuildConfig.DEBUG) Log.d(TAG, "download url:" + Constants.LOLO_URL);
 
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
 		HttpConnectionParams.setSoTimeout(httpParameters, 10000);
 
 		HttpClient client = new DefaultHttpClient(httpParameters);
-		HttpGet request = new HttpGet(URL);
+		HttpGet request = new HttpGet(Constants.LOLO_URL);
 		HttpResponse response = client.execute(request);
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
@@ -86,9 +85,10 @@ public class Utils {
 		JSONObject finalResult = new JSONObject(tokener);
 		lolo = finalResult.getBoolean("open");
 
-		Log.d(TAG, "lolo: " + lolo);
-		Log.d(TAG, "download ready in " + ((System.currentTimeMillis() - startTime) / 1000)
-				+ " sec");
+		if (BuildConfig.DEBUG) Log.d(TAG, "lolo: " + lolo);
+		if (BuildConfig.DEBUG)
+			Log.d(TAG, "download ready in " + ((System.currentTimeMillis() - startTime) / 1000)
+					+ " sec");
 		return lolo;
 	}
 

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codeskraps.lolo"
-    android:versionCode="12"
-    android:versionName="1.11" >
+    android:versionCode="14"
+    android:versionName="1.13" >
 
     <!-- Remember to update the info code version -->
 
@@ -31,23 +31,31 @@
             android:name=".AboutActivity"
             android:theme="@style/Theme.Translucent" />
 
-        <receiver android:name=".LoloProvider" >
+        <receiver
+            android:name=".LoloProvider"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.codeskraps.lolo.FORCE_WIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/loloinfo" />
         </receiver>
-        <receiver android:name=".UpdateWidgetReceiver" >
+        <receiver
+            android:name=".LoloProvider"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.codeskraps.lolo.FORCE_WIDGET_UPDATE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".UpdateWidgetReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.codeskraps.lolo.BROADCAST_RECEIVER" />
             </intent-filter>
         </receiver>
-
-        <service android:name=".UpdateWidgetService" />
     </application>
 
 </manifest>

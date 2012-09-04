@@ -31,6 +31,11 @@ Install from Google Play
 * http://play.google.com/store/apps/details?id=com.codeskraps.lolo
 
 == ChangeLog
+<b>v1.13</b>
+* Improved widget size in some devices
+
+<b>v1.12</b>
+* Changed try/catch after reported crashes
 
 <b>v1.11</b>
 * ACRA - Crash report added
@@ -40,7 +45,7 @@ Install from Google Play
 <b>v1.10</b>
 * Out of  bound exception fixed
 
-<b>v.1.9</>
+<b>v.1.9</b>
 * On touch event stopped working after sometime has been fixed
 * Get lolo json parser been fixed
 
