@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 public class LoloProvider extends AppWidgetProvider {
 	private static final String TAG = LoloProvider.class.getSimpleName();
@@ -47,32 +48,28 @@ public class LoloProvider extends AppWidgetProvider {
 		if (BuildConfig.DEBUG) Log.d(TAG, "onReceive");
 		final String action = intent.getAction();
 		Log.d(TAG, "Action: " + action);
-		if (action.equals(Constants.FORCE_WIDGET_UPDATE)) updateWidget(context);
+		if (action.equals(Constants.FORCE_WIDGET_UPDATE)) {
+			ComponentName thisWidget = new ComponentName(context, LoloProvider.class);
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+
+			updateWidget(context, appWidgetManager, appWidgetIds);
+		}
 		super.onReceive(context, intent);
 	}
 
-	public void updateWidget(Context context) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "updateWidget");
-
-		ComponentName thisWidget = new ComponentName(context, LoloProvider.class);
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-		int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-
-		updateWidget(context, appWidgetManager, appWidgetIds);
-	}
-
 	private void updateWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "updateWidget2");
+		if (BuildConfig.DEBUG) Log.d(TAG, "updateWidget");
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-//		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
-//
-//		if (appWidgetIds.length > 0) {
-//			for (int appWidgetId : appWidgetIds) {
-//
-//				remoteViews.setOnClickPendingIntent(R.id.imgLolo, Utils.getOnTouchIntent(context));
-//				appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-//			}
-//		}
+		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
+		
+		if (appWidgetIds.length > 0) {
+			for (int appWidgetId : appWidgetIds) {
+				remoteViews.setOnClickPendingIntent(R.id.imgLolo,
+						Utils.getOnTouchIntent(context));
+				appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+			}
+		}
 
 		Intent broadcastIntent = new Intent();
 		broadcastIntent.setAction(Constants.BROADCAST_RECEIVER);

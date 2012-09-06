@@ -70,17 +70,21 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 			try {
 				lolo = Utils.getLolo();
 			} catch (UnsupportedEncodingException e) {
-				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG)
+					Log.e(TAG, (e == null) ? "UnsupportedEncodingException" : e.getMessage());
 			} catch (ClientProtocolException e) {
-				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG)
+					Log.e(TAG, (e == null) ? "ClientProtocolException" : e.getMessage());
 			} catch (IOException e) {
-				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "IOException" : e.getMessage());
 			} catch (IllegalArgumentException e) {
-				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG)
+					Log.e(TAG, (e == null) ? "IllegalArgumentException" : e.getMessage());
 			} catch (NullPointerException e) {
-				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG)
+					Log.e(TAG, (e == null) ? "NullPointerException" : e.getMessage());
 			} catch (JSONException e) {
-				if (BuildConfig.DEBUG && e != null) Log.e(TAG, e.getMessage());
+				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "JSONException" : e.getMessage());
 			} finally {
 				handler.post(new MyRunnable());
 			}
