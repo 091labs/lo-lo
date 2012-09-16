@@ -85,6 +85,8 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 					Log.e(TAG, (e == null) ? "NullPointerException" : e.getMessage());
 			} catch (JSONException e) {
 				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "JSONException" : e.getMessage());
+			} catch (Exception e) {
+				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "Exception" : e.getMessage());
 			} finally {
 				handler.post(new MyRunnable());
 			}

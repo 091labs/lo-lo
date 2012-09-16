@@ -54,8 +54,8 @@
     
     <string name="prefsCat_Info">Information</string>
     
-    <string name="prefsInfo_Title">091 Labs lo-lo v1.13</string>
-    <string name="prefsInfo_summary">GNU GPL License v3 - 2012</string>
+    <string name="prefsInfo_Title">091 Labs lo-lo v1.15</string>
+    <string name="prefsInfo_summary">GNU GPL License v3 &#8211; 2012</string>
 
     <!-- About -->
     <string name="about_title">091 Labs lo-lo</string>

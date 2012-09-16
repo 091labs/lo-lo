@@ -4,7 +4,7 @@
 * <b>Git:</b> https://github.com/091labs/lo-lo
 * <b>Author:</b> 091 Labs members
 * <b>License:</b> GNU GPL v3
-* <b>Latest Version:</b> 1.10
+* <b>Latest Version:</b> 1.15
 * <b>Release Date:</b> 2012	
 
 == General Infromation
@@ -31,6 +31,12 @@ Install from Google Play
 * http://play.google.com/store/apps/details?id=com.codeskraps.lolo
 
 == ChangeLog
+<b>v1.15</b>
+* Release version using Proguard and ZipAlign
+
+<b>v1.14</b>
+* Fix update
+
 <b>v1.13</b>
 * Improved widget size in some devices
 
