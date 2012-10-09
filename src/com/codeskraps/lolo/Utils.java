@@ -59,7 +59,7 @@ public class Utils {
 		return false;
 	}
 
-	public static boolean getLolo() throws UnsupportedEncodingException, ClientProtocolException,
+	public static short getLolo() throws UnsupportedEncodingException, ClientProtocolException,
 			IOException, IllegalArgumentException, NullPointerException, JSONException {
 		long startTime = System.currentTimeMillis();
 		if (BuildConfig.DEBUG) Log.d(TAG, "download begining");
@@ -81,9 +81,8 @@ public class Utils {
 
 		JSONTokener tokener = new JSONTokener(json);
 
-		boolean lolo = false;
 		JSONObject finalResult = new JSONObject(tokener);
-		lolo = finalResult.getBoolean("open");
+		short lolo = finalResult.getBoolean("open") ? Constants.LOLO_ON : Constants.LOLO_OFF;
 
 		if (BuildConfig.DEBUG) Log.d(TAG, "lolo: " + lolo);
 		if (BuildConfig.DEBUG)

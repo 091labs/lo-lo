@@ -32,7 +32,7 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 
 	private static Context context = null;
 	private static Handler handler;
-	private static boolean lolo;
+	private static short lolo;
 	private Thread downloadThread;
 
 	@Override
@@ -41,6 +41,7 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 
 		UpdateWidgetReceiver.context = context;
 
+		lolo = Constants.LOLO_NULL;
 		handler = new Handler();
 
 		if (Utils.isNetworkAvailable(context)) {
@@ -61,7 +62,10 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 			downloadThread.start();
 
 			// new DownloadXmlTask().execute();
-		} else if (BuildConfig.DEBUG) Log.d(TAG, "No network connection");
+		} else {
+			if (BuildConfig.DEBUG) Log.d(TAG, "No network connection");
+			handler.post(new MyRunnable());
+		}
 	}
 
 	static private class MyThread extends Thread {
@@ -104,12 +108,19 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 			if (appWidgetIds.length > 0) {
 				for (int appWidgetId : appWidgetIds) {
 
-					if (lolo) {
+					switch (lolo) {
+					case Constants.LOLO_ON:
 						remoteViews.setImageViewResource(R.id.imgLolo, R.drawable.open);
 						Log.d(TAG, "The labs is open");
-					} else {
+						break;
+					case Constants.LOLO_OFF:
 						remoteViews.setImageViewResource(R.id.imgLolo, R.drawable.closed);
 						Log.d(TAG, "The labs is close");
+						break;
+					case Constants.LOLO_NULL:
+						remoteViews.setImageViewResource(R.id.imgLolo, R.drawable._null);
+						Log.d(TAG, "The labs is null");
+						break;
 					}
 
 					Calendar c = Calendar.getInstance();

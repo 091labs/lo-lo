@@ -4,7 +4,7 @@
 * <b>Git:</b> https://github.com/091labs/lo-lo
 * <b>Author:</b> 091 Labs members
 * <b>License:</b> GNU GPL v3
-* <b>Latest Version:</b> 1.15
+* <b>Latest Version:</b> 1.16
 * <b>Release Date:</b> 2012	
 
 == General Infromation
@@ -21,7 +21,7 @@ and all creative ideas.
 == Authors
 
 * <b>Android:</b> Carles Sentis
-* <b>Art design:</b>  Darren Kearney
+* <b>Art design:</b> Darren Kearney
 * <b>Server:</b> Padraic Harley
 
 == Install
@@ -31,6 +31,9 @@ Install from Google Play
 * http://play.google.com/store/apps/details?id=com.codeskraps.lolo
 
 == ChangeLog
+<b>v1.16</b>
+* No signal image if unknown lolo state
+
 <b>v1.15</b>
 * Release version using Proguard and ZipAlign
 
