@@ -69,9 +69,7 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		chkSync = (CheckBoxPreference) findPreference(Constants.SHOW_SYNC);
 		chk24 = (CheckBoxPreference) findPreference(Constants.HOUR24);
 		lstInterval = (ListPreference) findPreference(Constants.INTERVAL);
-		Preference prefAbout = (Preference) findPreference(Constants.ABOUT);
-
-		prefAbout.setOnPreferenceClickListener(this);
+		((Preference) findPreference(Constants.ABOUT)).setOnPreferenceClickListener(this);
 	}
 
 	@Override
@@ -122,8 +120,8 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		if (BuildConfig.DEBUG) Log.d(TAG, "onSharedPreferenceChanged");
 
 		if (key.equals(Constants.HOUR24)) {
-			if (prefs.getBoolean(Constants.HOUR24, true)) 
-				chk24.setSummary(getString(R.string.prefs24_summaryTwo));
+			if (prefs.getBoolean(Constants.HOUR24, true)) chk24
+					.setSummary(getString(R.string.prefs24_summaryTwo));
 			else chk24.setSummary(getString(R.string.prefs24_summaryOne));
 
 		} else if (key.equals(Constants.ONCLICK)) {
@@ -162,18 +160,10 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 
 	@Override
 	public void onBackPressed() {
+		if (BuildConfig.DEBUG) Log.d(TAG, "onBackPressed");
 		// This will be called either automatically for you on 2.0
 		// or later, or by the code above on earlier versions of the
 		// platform.
-		if (BuildConfig.DEBUG) Log.d(TAG, "onBackPressed");
-		resultIntent();
-		finish();
-		return;
-	}
-
-	private void resultIntent() {
-		if (BuildConfig.DEBUG) Log.d(TAG, "resultIntent");
-
 		if (Constants.CONFIGURE_ACTION.equals(getIntent().getAction())) {
 			Intent intent = getIntent();
 			Bundle extras = intent.getExtras();
@@ -187,6 +177,8 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 			}
 		}
 		sendBroadcast(new Intent(Constants.FORCE_WIDGET_UPDATE));
+
+		super.onBackPressed();
 	}
 
 	@Override
