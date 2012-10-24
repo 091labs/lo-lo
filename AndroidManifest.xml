@@ -1,13 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codeskraps.lolo"
-    android:versionCode="18"
-    android:versionName="1.17" >
+    android:versionCode="19"
+    android:versionName="1.18" >
 
     <!-- Remember to update the info code version -->
 
     <uses-sdk
         android:minSdkVersion="7"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="10" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -30,6 +30,9 @@
         <activity
             android:name=".AboutActivity"
             android:theme="@style/Theme.Translucent" />
+        <activity
+            android:name=".AddAcount"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
 
         <receiver
             android:name=".LoloProvider"

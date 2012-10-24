@@ -1,17 +1,12 @@
 package com.codeskraps.lolo;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
-import org.xmlpull.v1.XmlPullParserException;
 
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
@@ -25,23 +20,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.codeskraps.lolo.RSSXmlParser.Entry;
+import com.codeskraps.lolo.Constants.LOLO;
 
 public class UpdateWidgetReceiver extends BroadcastReceiver {
 	private static final String TAG = UpdateWidgetReceiver.class.getSimpleName();
 
 	private static Context context = null;
-	private static Handler handler;
-	private static short lolo;
-	private Thread downloadThread;
+	private static Handler handler = null;
+	private static LOLO lolo;
+	private static String[] loloRSS;
+	private Thread downloadThread = null;
+	private static SharedPreferences prefs = null;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (BuildConfig.DEBUG) Log.d(TAG, "onStartCommand");
 
 		UpdateWidgetReceiver.context = context;
+		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-		lolo = Constants.LOLO_NULL;
+		lolo = LOLO.NULL;
+		loloRSS = null;
 		handler = new Handler();
 
 		if (Utils.isNetworkAvailable(context)) {
@@ -64,7 +63,7 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 			// new DownloadXmlTask().execute();
 		} else {
 			if (BuildConfig.DEBUG) Log.d(TAG, "No network connection");
-			handler.post(new MyRunnable());
+			new MyRunnable();
 		}
 	}
 
@@ -73,20 +72,28 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 		public void run() {
 			try {
 				lolo = Utils.getLolo();
+				// loloRSS =
+				// Utils.getRSSFedd(prefs.getString(Constants.RSS_TITLE, " "));
+				// Log.d(TAG, "loloRSS" + loloRSS[0]);
+				// if (loloRSS != null) {
+				// SharedPreferences.Editor editor = prefs.edit();
+				// editor.putString(Constants.RSS_TITLE, loloRSS[0]);
+				// editor.commit();
+				// }
+
+				// @formatter:off
+//			} catch (SAXException e) {
+//				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "SAXException" : e.getMessage());
 			} catch (UnsupportedEncodingException e) {
-				if (BuildConfig.DEBUG)
-					Log.e(TAG, (e == null) ? "UnsupportedEncodingException" : e.getMessage());
+				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "UnsupportedEncodingException" : e.getMessage());
 			} catch (ClientProtocolException e) {
-				if (BuildConfig.DEBUG)
-					Log.e(TAG, (e == null) ? "ClientProtocolException" : e.getMessage());
+				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "ClientProtocolException" : e.getMessage());
 			} catch (IOException e) {
 				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "IOException" : e.getMessage());
 			} catch (IllegalArgumentException e) {
-				if (BuildConfig.DEBUG)
-					Log.e(TAG, (e == null) ? "IllegalArgumentException" : e.getMessage());
+				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "IllegalArgumentException" : e.getMessage());
 			} catch (NullPointerException e) {
-				if (BuildConfig.DEBUG)
-					Log.e(TAG, (e == null) ? "NullPointerException" : e.getMessage());
+				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "NullPointerException" : e.getMessage());
 			} catch (JSONException e) {
 				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "JSONException" : e.getMessage());
 			} catch (Exception e) {
@@ -94,12 +101,12 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 			} finally {
 				handler.post(new MyRunnable());
 			}
+			// @formatter:off
 		}
 	}
 
 	static private class MyRunnable implements Runnable {
 		public void run() {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 			ComponentName provider = new ComponentName(context, LoloProvider.class);
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
@@ -109,18 +116,17 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 				for (int appWidgetId : appWidgetIds) {
 
 					switch (lolo) {
-					case Constants.LOLO_ON:
+					case ON:
 						remoteViews.setImageViewResource(R.id.imgLolo, R.drawable.open);
 						Log.d(TAG, "The labs is open");
 						break;
-					case Constants.LOLO_OFF:
+					case OFF:
 						remoteViews.setImageViewResource(R.id.imgLolo, R.drawable.closed);
 						Log.d(TAG, "The labs is close");
 						break;
-					case Constants.LOLO_NULL:
+					default:
 						remoteViews.setImageViewResource(R.id.imgLolo, R.drawable._null);
 						Log.d(TAG, "The labs is null");
-						break;
 					}
 
 					Calendar c = Calendar.getInstance();
@@ -153,6 +159,8 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 
 					} else remoteViews.setViewVisibility(R.id.txtSync, View.GONE);
 
+					if (loloRSS != null) remoteViews.setTextViewText(R.id.txtRSS, loloRSS[1]);
+
 					remoteViews.setViewVisibility(R.id.prgBar, View.GONE);
 					remoteViews.setOnClickPendingIntent(R.id.imgLolo,
 							Utils.getOnTouchIntent(context));
@@ -160,45 +168,5 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 				}
 			} else if (BuildConfig.DEBUG) Log.d(TAG, "No widgets installed");
 		}
-	}
-
-	// Uploads XML from stackoverflow.com, parses it, and combines it with
-	// HTML markup. Returns HTML string.
-	private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
-		InputStream stream = null;
-		RSSXmlParser rssXmlParser = new RSSXmlParser();
-		List<Entry> entries = null;
-
-		try {
-			stream = downloadUrl(urlString);
-			entries = rssXmlParser.parse(stream);
-			// Makes sure that the InputStream is closed after the app is
-			// finished using it.
-		} finally {
-			if (stream != null) stream.close();
-		}
-
-		// Each Entry object represents a single post in the XML feed.
-		// This section processes the entries list to combine each entry with
-		// HTML markup.
-		// Each entry is displayed in the UI as a link that optionally includes
-		// a text summary.
-		return entries.get(0).title;
-	}
-
-	// Given a string representation of a URL, sets up a connection and gets
-	// an input stream.
-	private InputStream downloadUrl(String urlString) throws IOException {
-		URL url = new URL(urlString);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setReadTimeout(10000 /* milliseconds */);
-		conn.setConnectTimeout(15000 /* milliseconds */);
-		conn.setRequestMethod("GET");
-		conn.setDoInput(true);
-		// Starts the query
-		conn.connect();
-		InputStream stream = conn.getInputStream();
-
-		return stream;
 	}
 }

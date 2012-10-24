@@ -49,8 +49,23 @@
     </string-array>
 
     <string name="prefsCat_Info">Information</string>
-    <string name="prefsInfo_Title">091 Labs lo-lo v1.17</string>
+    <string name="prefsInfo_Title">091 Labs lo-lo v1.18</string>
     <string name="prefsInfo_summary">GNU GPL License v3 &#8211; 2012</string>
+
+    <!-- Add Acount -->
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="account_setup">Account Setup</string>
+    <string name="attempting_configure">Attempting to configure account</string>
+    <string name="no_network_title">No network available</string>
+    <string name="no_network_message">There is no network available. Please connect to a network and try again.</string>
+    <string name="required_fields">Required Fields</string>
+    <string name="required_field">Required Field</string>
+    <string name="url_username_password_required">Please fill in all of the fields before submitting.</string>
+    <string name="error">Error</string>
+    <string name="no_site_error">Sorry, could not connect to the WordPress site. Please try again later.</string>
 
     <!-- About -->
     <string name="about_title">091 Labs lo-lo</string>

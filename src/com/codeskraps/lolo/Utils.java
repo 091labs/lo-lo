@@ -25,6 +25,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import nl.matshofman.saxrssreader.RssFeed;
+import nl.matshofman.saxrssreader.RssItem;
+import nl.matshofman.saxrssreader.RssReader;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -37,6 +43,9 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.xml.sax.SAXException;
+
+import com.codeskraps.lolo.Constants.LOLO;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -59,7 +68,7 @@ public class Utils {
 		return false;
 	}
 
-	public static short getLolo() throws UnsupportedEncodingException, ClientProtocolException,
+	public static LOLO getLolo() throws UnsupportedEncodingException, ClientProtocolException,
 			IOException, IllegalArgumentException, NullPointerException, JSONException {
 		long startTime = System.currentTimeMillis();
 		if (BuildConfig.DEBUG) Log.d(TAG, "download begining");
@@ -82,7 +91,7 @@ public class Utils {
 		JSONTokener tokener = new JSONTokener(json);
 
 		JSONObject finalResult = new JSONObject(tokener);
-		short lolo = finalResult.getBoolean("open") ? Constants.LOLO_ON : Constants.LOLO_OFF;
+		LOLO lolo = finalResult.getBoolean("open") ? LOLO.ON : LOLO.OFF;
 
 		if (BuildConfig.DEBUG) Log.d(TAG, "lolo: " + lolo);
 		if (BuildConfig.DEBUG)
@@ -129,5 +138,19 @@ public class Utils {
 			break;
 		}
 		return pendingIntent;
+	}
+
+	public static String[] getRSSFedd(String title) throws SAXException, IOException {
+
+		URL url = new URL("http://091labs.com/feed/");
+		RssFeed feed = RssReader.read(url);
+
+		ArrayList<RssItem> rssItems = feed.getRssItems();
+		Log.i(TAG, "RSS Items" + rssItems.size());
+		for (RssItem rssItem : rssItems) {
+			Log.i(TAG, "RSS Reader" + rssItem.getTitle());
+		}
+
+		return null;
 	}
 }
