@@ -4,7 +4,7 @@
 * <b>Git:</b> https://github.com/091labs/lo-lo
 * <b>Author:</b> 091 Labs members
 * <b>License:</b> GNU GPL v3
-* <b>Latest Version:</b> 1.17
+* <b>Latest Version:</b> 1.18
 * <b>Release Date:</b> 2012	
 
 == General Infromation
@@ -31,6 +31,9 @@ Install from Google Play
 * http://play.google.com/store/apps/details?id=com.codeskraps.lolo
 
 == ChangeLog
+<b>v1.18</b>
+* Changed initial image of widget to no signal
+
 <b>v1.17</b>
 * No signal image changed
 

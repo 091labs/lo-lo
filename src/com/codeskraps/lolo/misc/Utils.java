@@ -19,7 +19,7 @@
  * If not, see http://www.gnu.org/licenses.
  */
 
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.misc;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,6 +48,11 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.codeskraps.lolo.BuildConfig;
+import com.codeskraps.lolo.R;
+import com.codeskraps.lolo.home.PrefsActivity;
+import com.codeskraps.lolo.misc.Constants.LOLO;
+
 public class Utils {
 	private static final String TAG = Utils.class.getSimpleName();
 
@@ -59,7 +64,7 @@ public class Utils {
 		return false;
 	}
 
-	public static short getLolo() throws UnsupportedEncodingException, ClientProtocolException,
+	public static LOLO getLolo() throws UnsupportedEncodingException, ClientProtocolException,
 			IOException, IllegalArgumentException, NullPointerException, JSONException {
 		long startTime = System.currentTimeMillis();
 		if (BuildConfig.DEBUG) Log.d(TAG, "download begining");
@@ -82,7 +87,7 @@ public class Utils {
 		JSONTokener tokener = new JSONTokener(json);
 
 		JSONObject finalResult = new JSONObject(tokener);
-		short lolo = finalResult.getBoolean("open") ? Constants.LOLO_ON : Constants.LOLO_OFF;
+		LOLO lolo = finalResult.getBoolean("open") ? LOLO.ON : LOLO.OFF;
 
 		if (BuildConfig.DEBUG) Log.d(TAG, "lolo: " + lolo);
 		if (BuildConfig.DEBUG)

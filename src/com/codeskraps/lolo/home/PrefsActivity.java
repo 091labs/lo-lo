@@ -19,7 +19,7 @@
  * If not, see http://www.gnu.org/licenses.
  */
 
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.home;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -35,6 +35,13 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
+
+import com.codeskraps.lolo.BuildConfig;
+import com.codeskraps.lolo.R;
+import com.codeskraps.lolo.misc.Constants;
+import com.codeskraps.lolo.twitter.TwitterAccountActivity;
+import com.codeskraps.lolo.twitter.TwitterSignInActivity;
 
 public class PrefsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener,
 		OnPreferenceClickListener {
@@ -55,6 +62,7 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		addPreferencesFromResource(R.xml.preferences);
 		setContentView(R.layout.prefs);
 
@@ -69,6 +77,9 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 		chkSync = (CheckBoxPreference) findPreference(Constants.SHOW_SYNC);
 		chk24 = (CheckBoxPreference) findPreference(Constants.HOUR24);
 		lstInterval = (ListPreference) findPreference(Constants.INTERVAL);
+		// ((Preference) findPreference(Constants.WORDPRESS_ACOUNT))
+		// .setOnPreferenceClickListener(this);
+		((Preference) findPreference(Constants.TWITTER_ACCOUNT)).setOnPreferenceClickListener(this);
 		((Preference) findPreference(Constants.ABOUT)).setOnPreferenceClickListener(this);
 	}
 
@@ -145,6 +156,28 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 	}
 
 	@Override
+	public boolean onPreferenceClick(Preference pref) {
+		if (pref.getKey().equals(Constants.ABOUT)) {
+			startActivity(new Intent(this, AboutActivity.class));
+		} else if (pref.getKey().equals(Constants.WORDPRESS_ACOUNT)) {
+			startActivity(new Intent(this, AddAcount.class));
+		} else if (pref.getKey().equals(Constants.TWITTER_ACCOUNT)) {
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(getApplication());
+			String token = prefs.getString(Constants.ACCESS_TOKEN, null);
+			String secret = prefs.getString(Constants.ACCESS_SECRET, null);
+
+			if (token == null || secret == null) {
+				startActivity(new Intent(this, TwitterSignInActivity.class));
+			} else {
+				startActivity(new Intent(this, TwitterAccountActivity.class));
+			}
+		}
+
+		return true;
+	}
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (BuildConfig.DEBUG) Log.d(TAG, "onKeyDown");
 
@@ -182,9 +215,12 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 	}
 
 	@Override
-	public boolean onPreferenceClick(Preference pref) {
-		if (pref.getKey().equals(Constants.ABOUT))
-			startActivity(new Intent(this, AboutActivity.class));
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+		}
 		return true;
 	}
 }

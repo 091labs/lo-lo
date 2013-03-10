@@ -19,7 +19,12 @@
  * If not, see http://www.gnu.org/licenses.
  */
 
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.home;
+
+import com.codeskraps.lolo.BuildConfig;
+import com.codeskraps.lolo.R;
+import com.codeskraps.lolo.misc.Constants;
+import com.codeskraps.lolo.misc.Utils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

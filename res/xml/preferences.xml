@@ -6,7 +6,6 @@
             android:defaultValue="true"
             android:key="chkSync"
             android:title="@string/prefsSync_title" />
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="chk24"
@@ -32,6 +31,16 @@
             android:entryValues="@array/interval_values"
             android:key="lstInterval"
             android:title="@string/prefsInterval_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Accounts" >
+
+        <!-- <Preference -->
+        <!-- android:key="prefWordPressAccount" -->
+        <!-- android:title="091Labs.com account" /> -->
+
+        <Preference
+            android:key="prefTwitterAccount"
+            android:title="Twitter account" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefsCat_Info" >
         <Preference
