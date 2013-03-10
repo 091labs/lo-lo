@@ -19,18 +19,12 @@
  * If not, see http://www.gnu.org/licenses.
  */
 
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.misc;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.ArrayList;
-
-import nl.matshofman.saxrssreader.RssFeed;
-import nl.matshofman.saxrssreader.RssItem;
-import nl.matshofman.saxrssreader.RssReader;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -43,9 +37,6 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.xml.sax.SAXException;
-
-import com.codeskraps.lolo.Constants.LOLO;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -56,6 +47,11 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.codeskraps.lolo.BuildConfig;
+import com.codeskraps.lolo.R;
+import com.codeskraps.lolo.home.PrefsActivity;
+import com.codeskraps.lolo.misc.Constants.LOLO;
 
 public class Utils {
 	private static final String TAG = Utils.class.getSimpleName();
@@ -138,19 +134,5 @@ public class Utils {
 			break;
 		}
 		return pendingIntent;
-	}
-
-	public static String[] getRSSFedd(String title) throws SAXException, IOException {
-
-		URL url = new URL("http://091labs.com/feed/");
-		RssFeed feed = RssReader.read(url);
-
-		ArrayList<RssItem> rssItems = feed.getRssItems();
-		Log.i(TAG, "RSS Items" + rssItems.size());
-		for (RssItem rssItem : rssItems) {
-			Log.i(TAG, "RSS Reader" + rssItem.getTitle());
-		}
-
-		return null;
 	}
 }

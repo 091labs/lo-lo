@@ -1,4 +1,4 @@
-package com.codeskraps.wordpress;
+package com.codeskraps.lolo.wordpress;
 
 public class XMLRPCException extends Exception {
 

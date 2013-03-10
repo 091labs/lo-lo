@@ -1,4 +1,4 @@
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.home;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,7 +20,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.codeskraps.lolo.Constants.LOLO;
+import com.codeskraps.lolo.BuildConfig;
+import com.codeskraps.lolo.R;
+import com.codeskraps.lolo.misc.Constants;
+import com.codeskraps.lolo.misc.Constants.LOLO;
+import com.codeskraps.lolo.misc.Utils;
 
 public class UpdateWidgetReceiver extends BroadcastReceiver {
 	private static final String TAG = UpdateWidgetReceiver.class.getSimpleName();

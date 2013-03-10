@@ -1,4 +1,4 @@
-package com.codeskraps.wordpress;
+package com.codeskraps.lolo.wordpress;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;

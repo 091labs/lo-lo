@@ -1,4 +1,4 @@
-package com.codeskraps.wordpress;
+package com.codeskraps.lolo.wordpress;
 
 /**
  * <p>Encodes and decodes to and from Base64 notation.</p>

@@ -1,4 +1,4 @@
-package com.codeskraps.wordpress;
+package com.codeskraps.lolo.wordpress;
 
 /**
  * A Base64 Encoder/Decoder.

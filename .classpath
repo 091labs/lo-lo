@@ -4,7 +4,9 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="libs/acra-4.2.3.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.7.jar"/>
+	<classpathentry kind="lib" path="libs/scribe-1.3.0.jar"/>
+	<classpathentry kind="lib" path="libs/gson-2.2.2.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="src" path="/matshofman-Android-RSS-Reader-Library-390ce54"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

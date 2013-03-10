@@ -1,6 +1,8 @@
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.misc;
 
 public class Constants {
+
+	private Constants() {}
 
 	public static final String LOLO_URL = "http://scruffy.091labs.com/lolo/json/status.json";
 	public static final String LOLO_RSS = "http://091labs.com/feed/";
@@ -15,10 +17,13 @@ public class Constants {
 	public static final String SHOW_SYNC = "chkSync";
 	public static final String HOUR24 = "chk24";
 	public static final String INTERVAL = "lstInterval";
-	public static final String ADD_ACOUNT = "prefAccount";
+	public static final String WORDPRESS_ACOUNT = "prefWordPressAccount";
+	public static final String TWITTER_ACCOUNT = "prefTwitterAccount";
 	public static final String ABOUT = "prefAbout";
 	public static final String FIRST_LAUNCH = "firstLaunch";
 	public static final String RSS_TITLE = "rsstitle";
+	public static final String ACCESS_TOKEN = "accestoken";
+	public static final String ACCESS_SECRET = "accesssecret";
 
 	public enum LOLO {
 		ON, OFF, NULL;

@@ -1,12 +1,11 @@
 <resources>
 
     <string name="app_name">091 Labs lo-lo</string>
-    <string name="menu_settings">Settings</string>
     <string name="contentDescription">lo-lo Image</string>
     <string name="iconImageDescription">logo</string>
 
     <!-- Preference Activity -->
-    <string name="prefsCat_General">General</string>
+    <string name="prefsCat_General">Widget</string>
     <string name="prefsSync_title">Show last sync time</string>
     <string name="prefsSync_summarNot">Not yet synced!</string>
     <string name="prefs24_title">Use 24-hour format</string>
@@ -49,10 +48,10 @@
     </string-array>
 
     <string name="prefsCat_Info">Information</string>
-    <string name="prefsInfo_Title">091 Labs lo-lo v1.18</string>
-    <string name="prefsInfo_summary">GNU GPL License v3 &#8211; 2012</string>
+    <string name="prefsInfo_Title">091 Labs lo-lo v2.0</string>
+    <string name="prefsInfo_summary">GNU GPL License v3 &#8211; 2013</string>
 
-    <!-- Add Acount -->
+    <!-- WordPress Acount -->
     <string name="username">Username:</string>
     <string name="password">Password:</string>
     <string name="save">Save</string>
@@ -66,6 +65,27 @@
     <string name="url_username_password_required">Please fill in all of the fields before submitting.</string>
     <string name="error">Error</string>
     <string name="no_site_error">Sorry, could not connect to the WordPress site. Please try again later.</string>
+
+    <!-- Twitter Accont -->
+    <string name="twi_help">You got to sign in to Twitter using OAth and allow access to 091 Labs lo-lo app. Once you do it will give a code, come here and enter the code you are given.</string>
+    <string name="twi_stepone">Step One</string>
+    <string name="twi_steptwo">Setp Two</string>
+    <string name="twi_goto">Go to Twitter</string>
+    <string name="twi_enterkey">Enter key:</string>
+    <string name="twi_submit">Submit</string>
+    <string name="twi_dia_title">Error!</string>
+    <string name="twi_dia_ok">OK</string>
+    <string name="twi_dia_message">Something has gone wrong&#8230;</string>
+
+    <!-- Tweet -->
+    <string name="twe_enter">Enter tweet here</string>
+
+    <!-- Facebook -->
+    <string name="fac_help">You got to sign in to Facebook using OAth and allow access to 091 Labs lo-lo app. Once you do it will give a code, come here and enter the code you are given.</string>
+    <string name="fac_goto">Go to Facebook</string>
+
+    <!-- Menu -->
+    <string name="men_setting">Settings</string>
 
     <!-- About -->
     <string name="about_title">091 Labs lo-lo</string>

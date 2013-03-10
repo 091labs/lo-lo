@@ -1,4 +1,4 @@
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.home;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;

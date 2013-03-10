@@ -1,41 +1,44 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codeskraps.lolo"
-    android:versionCode="19"
-    android:versionName="1.18" >
+    android:versionCode="20"
+    android:versionName="2.0" >
 
     <!-- Remember to update the info code version -->
 
     <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="10" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".LoloApp"
+        android:name=".home.LoloApp"
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".PrefsActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+        <activity android:name=".home.PrefsActivity" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".twitter.TwitterSignInActivity" />
+        <activity android:name=".twitter.TwitterAccountActivity" />
+        <activity android:name=".twitter.TweetActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".home.AddAcount" />
         <activity
-            android:name=".AboutActivity"
+            android:name=".home.AboutActivity"
             android:theme="@style/Theme.Translucent" />
-        <activity
-            android:name=".AddAcount"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
 
         <receiver
-            android:name=".LoloProvider"
+            android:name=".home.LoloProvider"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -46,14 +49,14 @@
                 android:resource="@xml/loloinfo" />
         </receiver>
         <receiver
-            android:name=".LoloProvider"
+            android:name=".home.LoloProvider"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.codeskraps.lolo.FORCE_WIDGET_UPDATE" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".UpdateWidgetReceiver"
+            android:name=".home.UpdateWidgetReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.codeskraps.lolo.BROADCAST_RECEIVER" />

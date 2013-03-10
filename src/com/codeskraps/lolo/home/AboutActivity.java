@@ -1,4 +1,6 @@
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.home;
+
+import com.codeskraps.lolo.R;
 
 import android.app.Activity;
 import android.os.Bundle;

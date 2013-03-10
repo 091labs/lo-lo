@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <include
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/header" />
+        android:layout_height="1dp"
+        android:background="#FF0000" />
 
     <TextView
         android:layout_width="fill_parent"

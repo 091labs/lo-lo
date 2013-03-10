@@ -33,9 +33,14 @@
             android:title="@string/prefsInterval_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Accounts" >
+
+        <!-- <Preference -->
+        <!-- android:key="prefWordPressAccount" -->
+        <!-- android:title="091Labs.com account" /> -->
+
         <Preference
-            android:key="prefAccount"
-            android:title="091Labs.com account" />
+            android:key="prefTwitterAccount"
+            android:title="Twitter account" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefsCat_Info" >
         <Preference

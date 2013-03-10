@@ -1,4 +1,4 @@
-package com.codeskraps.wordpress;
+package com.codeskraps.lolo.wordpress;
 
 import org.apache.http.conn.scheme.SocketFactory;
 import org.apache.http.conn.ssl.AllowAllHostnameVerifier;

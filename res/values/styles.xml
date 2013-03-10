@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <style name="AppTheme" parent="android:Theme" />
 
     <drawable name="transparent_background">#DD000000</drawable>
 

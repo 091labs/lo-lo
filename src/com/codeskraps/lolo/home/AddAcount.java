@@ -1,4 +1,4 @@
-package com.codeskraps.lolo;
+package com.codeskraps.lolo.home;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,9 +29,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.codeskraps.wordpress.ApiHelper;
-import com.codeskraps.wordpress.XMLRPCClient;
-import com.codeskraps.wordpress.XMLRPCException;
+import com.codeskraps.lolo.R;
+import com.codeskraps.lolo.misc.Utils;
+import com.codeskraps.lolo.wordpress.ApiHelper;
+import com.codeskraps.lolo.wordpress.XMLRPCClient;
+import com.codeskraps.lolo.wordpress.XMLRPCException;
 
 public class AddAcount extends Activity implements OnClickListener {
 	private static final String TAG = AddAcount.class.getSimpleName();
@@ -50,7 +52,7 @@ public class AddAcount extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_acount);
+		setContentView(R.layout.wordpress_acount);
 
 		etxtUsername = (EditText) findViewById(R.id.username);
 		etxtPassword = (EditText) findViewById(R.id.password);

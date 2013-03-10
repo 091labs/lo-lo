@@ -1,4 +1,4 @@
-package com.codeskraps.wordpress;
+package com.codeskraps.lolo.wordpress;
 
 import java.io.BufferedReader;
 import java.io.IOException;
