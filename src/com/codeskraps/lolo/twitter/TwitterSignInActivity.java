@@ -21,6 +21,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class TwitterSignInActivity extends Activity implements OnClickListener {
 				.apiSecret("vLLTqO311ZhlVXhl1GaB72DnIwdCOPwzeozNRWy3I").build();
 		new OathTask().execute(STEP.zero);
 
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		setContentView(R.layout.twitter_signin);
@@ -57,22 +59,31 @@ public class TwitterSignInActivity extends Activity implements OnClickListener {
 		// @formatter:off
 		switch (v.getId()) {
 		case R.id.twi_btn_goto: new OathTask().execute(STEP.one); break;
-		case R.id.twi_submit: new OathTask().execute(STEP.two); break;
+		case R.id.twi_submit: 
+			((Button) findViewById(R.id.twi_submit)).setOnClickListener(this);
+			new OathTask().execute(STEP.two); 
+			break;
 		case R.id.twi_cancel: finish(); break;
 		// @formatter:on
 		}
 	}
 
-	private class OathTask extends AsyncTask<STEP, Void, Void> {
+	private class OathTask extends AsyncTask<STEP, Void, Boolean> {
 
 		@Override
-		protected Void doInBackground(STEP... params) {
+		protected void onPreExecute() {
+			super.onPreExecute();
+			setProgressBarIndeterminateVisibility(Boolean.TRUE);
+		}
+
+		@Override
+		protected Boolean doInBackground(STEP... params) {
 			STEP step = params[0];
 
 			if (step == STEP.zero) {
 				requestToken = service.getRequestToken();
-			}
-			if (step == STEP.one) {
+
+			} else if (step == STEP.one) {
 				String token = service.getAuthorizationUrl(requestToken);
 
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(token));
@@ -95,21 +106,33 @@ public class TwitterSignInActivity extends Activity implements OnClickListener {
 					editor.commit();
 
 					TwitterSignInActivity.this.finish();
+					return false;
 
 				} catch (Exception e) {
-					new AlertDialog.Builder(TwitterSignInActivity.this)
-							.setIcon(R.drawable.alerts_and_states_error)
-							.setMessage(R.string.twi_dia_message)
-							.setTitle(R.string.twi_dia_title)
-							.setPositiveButton(R.string.twi_dia_ok,
-									new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int id) {
-											dialog.dismiss();
-										}
-									}).create().show();
+					Log.i(TAG, "Handled: twitter key - " + e.getMessage(), e);
+					return true;
 				}
 			}
-			return null;
+			return false;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+
+			setProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+			if (result)
+				new AlertDialog.Builder(TwitterSignInActivity.this)
+						.setIcon(R.drawable.alerts_and_states_error)
+						.setMessage(R.string.twi_dia_message)
+						.setTitle(R.string.twi_dia_title)
+						.setPositiveButton(R.string.twi_dia_ok,
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										dialog.dismiss();
+									}
+								}).create().show();
 		}
 	}
 
