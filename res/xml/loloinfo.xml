@@ -3,6 +3,6 @@
     android:initialLayout="@layout/widget"
     android:minHeight="56dip"
     android:minWidth="56dip"
-    android:configure="com.codeskraps.lolo.PrefsActivity"
+    android:configure="com.codeskraps.lolo.home.PrefsActivity"
     android:previewImage="@drawable/open" />
     

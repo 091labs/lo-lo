@@ -31,8 +31,9 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -43,138 +44,18 @@ import com.codeskraps.lolo.misc.Constants;
 import com.codeskraps.lolo.twitter.TwitterAccountActivity;
 import com.codeskraps.lolo.twitter.TwitterSignInActivity;
 
-public class PrefsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener,
-		OnPreferenceClickListener {
+public class PrefsActivity extends FragmentActivity {
 	private static final String TAG = PrefsActivity.class.getSimpleName();
-
-	private SharedPreferences prefs = null;
-	private ListPreference lstOnClick = null;
-	private EditTextPreference eURL = null;
-	private CheckBoxPreference chkSync = null;
-	private CheckBoxPreference chk24 = null;
-	private ListPreference lstInterval = null;
-
-	private String[] entries_OnClick = null;
-	private String[] entries_Interval = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		addPreferencesFromResource(R.xml.preferences);
+
 		setContentView(R.layout.prefs);
 
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		prefs.registerOnSharedPreferenceChangeListener(this);
-
-		entries_OnClick = getResources().getStringArray(R.array.OnClick_entries);
-		entries_Interval = getResources().getStringArray(R.array.interval_entries);
-
-		lstOnClick = (ListPreference) findPreference(Constants.ONCLICK);
-		eURL = (EditTextPreference) findPreference(Constants.EURL);
-		chkSync = (CheckBoxPreference) findPreference(Constants.SHOW_SYNC);
-		chk24 = (CheckBoxPreference) findPreference(Constants.HOUR24);
-		lstInterval = (ListPreference) findPreference(Constants.INTERVAL);
-		// ((Preference) findPreference(Constants.WORDPRESS_ACOUNT))
-		// .setOnPreferenceClickListener(this);
-		((Preference) findPreference(Constants.TWITTER_ACCOUNT)).setOnPreferenceClickListener(this);
-		((Preference) findPreference(Constants.ABOUT)).setOnPreferenceClickListener(this);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		prefs.registerOnSharedPreferenceChangeListener(this);
-
-		String lstSync = prefs.getString(Constants.LAST_SYNC, null);
-		if (lstSync == null) chkSync.setSummary(getString(R.string.prefsSync_summarNot));
-		else chkSync.setSummary(lstSync);
-
-		boolean hour24 = prefs.getBoolean(Constants.HOUR24, true);
-		if (hour24) chk24.setSummary(getString(R.string.prefs24_summaryTwo));
-		else chk24.setSummary(getString(R.string.prefs24_summaryOne));
-
-		String onClick = prefs.getString(Constants.ONCLICK, "0");
-		int action = Integer.parseInt(onClick);
-		lstOnClick.setSummary(entries_OnClick[action]);
-
-		String url = prefs.getString(Constants.EURL, getString(R.string.prefsURL_default));
-		String urlSummary = String.format("%s %s", getString(R.string.prefsURL_summary), url);
-		eURL.setSummary(urlSummary);
-
-		String intervalString = prefs.getString(Constants.INTERVAL, "1");
-		int interval = Integer.parseInt(intervalString);
-		lstInterval.setSummary(entries_Interval[interval]);
-
-		if (action != 3) eURL.setEnabled(false);
-
-		if (prefs.getBoolean(Constants.FIRST_LAUNCH, true)) {
-			startActivity(new Intent(this, AboutActivity.class));
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putBoolean(Constants.FIRST_LAUNCH, false);
-			editor.commit();
-		}
-	}
-
-	@Override
-	protected void onPause() {
-		if (BuildConfig.DEBUG) Log.d(TAG, "onPause");
-		super.onPause();
-		prefs.unregisterOnSharedPreferenceChangeListener(this);
-	}
-
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "onSharedPreferenceChanged");
-
-		if (key.equals(Constants.HOUR24)) {
-			if (prefs.getBoolean(Constants.HOUR24, true)) chk24
-					.setSummary(getString(R.string.prefs24_summaryTwo));
-			else chk24.setSummary(getString(R.string.prefs24_summaryOne));
-
-		} else if (key.equals(Constants.ONCLICK)) {
-			String onClick = prefs.getString(Constants.ONCLICK, "0");
-			int action = Integer.parseInt(onClick);
-			lstOnClick.setSummary(entries_OnClick[action]);
-
-			if (action != 3) eURL.setEnabled(false);
-			else eURL.setEnabled(true);
-
-		} else if (key.equals(Constants.EURL)) {
-			String url = prefs.getString(Constants.EURL, getString(R.string.prefsURL_default));
-			String urlSummary = String.format("%s %s", getString(R.string.prefsURL_summary), url);
-			eURL.setSummary(urlSummary);
-
-		} else if (key.equals(Constants.INTERVAL)) {
-			String intervalString = prefs.getString(Constants.INTERVAL, "1");
-			int interval = Integer.parseInt(intervalString);
-			lstInterval.setSummary(entries_Interval[interval]);
-		}
-	}
-
-	@Override
-	public boolean onPreferenceClick(Preference pref) {
-		if (pref.getKey().equals(Constants.ABOUT)) {
-			startActivity(new Intent(this, AboutActivity.class));
-		} else if (pref.getKey().equals(Constants.WORDPRESS_ACOUNT)) {
-			startActivity(new Intent(this, AddAcount.class));
-		} else if (pref.getKey().equals(Constants.TWITTER_ACCOUNT)) {
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(getApplication());
-			String token = prefs.getString(Constants.ACCESS_TOKEN, null);
-			String secret = prefs.getString(Constants.ACCESS_SECRET, null);
-
-			if (token == null || secret == null) {
-				startActivity(new Intent(this, TwitterSignInActivity.class));
-			} else {
-				startActivity(new Intent(this, TwitterAccountActivity.class));
-			}
-		}
-
-		return true;
+		getFragmentManager().beginTransaction().add(R.id.pre_fl, new PrefsFragment()).commit();
 	}
 
 	@Override
@@ -222,5 +103,139 @@ public class PrefsActivity extends PreferenceActivity implements OnSharedPrefere
 			break;
 		}
 		return true;
+	}
+
+	public static class PrefsFragment extends PreferenceFragment implements
+			OnSharedPreferenceChangeListener, OnPreferenceClickListener {
+
+		private SharedPreferences prefs = null;
+		private ListPreference lstOnClick = null;
+		private EditTextPreference eURL = null;
+		private CheckBoxPreference chkSync = null;
+		private CheckBoxPreference chk24 = null;
+		private ListPreference lstInterval = null;
+
+		private String[] entries_OnClick = null;
+		private String[] entries_Interval = null;
+
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
+			super.onCreate(savedInstanceState);
+
+			addPreferencesFromResource(R.xml.preferences);
+
+			prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			prefs.registerOnSharedPreferenceChangeListener(this);
+
+			entries_OnClick = getResources().getStringArray(R.array.OnClick_entries);
+			entries_Interval = getResources().getStringArray(R.array.interval_entries);
+
+			lstOnClick = (ListPreference) findPreference(Constants.ONCLICK);
+			eURL = (EditTextPreference) findPreference(Constants.EURL);
+			chkSync = (CheckBoxPreference) findPreference(Constants.SHOW_SYNC);
+			chk24 = (CheckBoxPreference) findPreference(Constants.HOUR24);
+			lstInterval = (ListPreference) findPreference(Constants.INTERVAL);
+			// ((Preference) findPreference(Constants.WORDPRESS_ACOUNT))
+			// .setOnPreferenceClickListener(this);
+			((Preference) findPreference(Constants.TWITTER_ACCOUNT))
+					.setOnPreferenceClickListener(this);
+			((Preference) findPreference(Constants.ABOUT)).setOnPreferenceClickListener(this);
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+
+			prefs.registerOnSharedPreferenceChangeListener(this);
+
+			String lstSync = prefs.getString(Constants.LAST_SYNC, null);
+			if (lstSync == null) chkSync.setSummary(getString(R.string.prefsSync_summarNot));
+			else chkSync.setSummary(lstSync);
+
+			boolean hour24 = prefs.getBoolean(Constants.HOUR24, true);
+			if (hour24) chk24.setSummary(getString(R.string.prefs24_summaryTwo));
+			else chk24.setSummary(getString(R.string.prefs24_summaryOne));
+
+			String onClick = prefs.getString(Constants.ONCLICK, "0");
+			int action = Integer.parseInt(onClick);
+			lstOnClick.setSummary(entries_OnClick[action]);
+
+			String url = prefs.getString(Constants.EURL, getString(R.string.prefsURL_default));
+			String urlSummary = String.format("%s %s", getString(R.string.prefsURL_summary), url);
+			eURL.setSummary(urlSummary);
+
+			String intervalString = prefs.getString(Constants.INTERVAL, "1");
+			int interval = Integer.parseInt(intervalString);
+			lstInterval.setSummary(entries_Interval[interval]);
+
+			if (action != 3) eURL.setEnabled(false);
+
+			if (prefs.getBoolean(Constants.FIRST_LAUNCH, true)) {
+				startActivity(new Intent(getActivity(), AboutActivity.class));
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putBoolean(Constants.FIRST_LAUNCH, false);
+				editor.commit();
+			}
+		}
+
+		@Override
+		public void onPause() {
+			if (BuildConfig.DEBUG) Log.d(TAG, "onPause");
+			super.onPause();
+			prefs.unregisterOnSharedPreferenceChangeListener(this);
+		}
+
+		@Override
+		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+			if (BuildConfig.DEBUG) Log.d(TAG, "onSharedPreferenceChanged");
+
+			if (key.equals(Constants.HOUR24)) {
+				if (prefs.getBoolean(Constants.HOUR24, true)) chk24
+						.setSummary(getString(R.string.prefs24_summaryTwo));
+				else chk24.setSummary(getString(R.string.prefs24_summaryOne));
+
+			} else if (key.equals(Constants.ONCLICK)) {
+				String onClick = prefs.getString(Constants.ONCLICK, "0");
+				int action = Integer.parseInt(onClick);
+				lstOnClick.setSummary(entries_OnClick[action]);
+
+				if (action != 3) eURL.setEnabled(false);
+				else eURL.setEnabled(true);
+
+			} else if (key.equals(Constants.EURL)) {
+				String url = prefs.getString(Constants.EURL, getString(R.string.prefsURL_default));
+				String urlSummary = String.format("%s %s", getString(R.string.prefsURL_summary),
+						url);
+				eURL.setSummary(urlSummary);
+
+			} else if (key.equals(Constants.INTERVAL)) {
+				String intervalString = prefs.getString(Constants.INTERVAL, "1");
+				int interval = Integer.parseInt(intervalString);
+				lstInterval.setSummary(entries_Interval[interval]);
+			}
+		}
+
+		@Override
+		public boolean onPreferenceClick(Preference pref) {
+			if (pref.getKey().equals(Constants.ABOUT)) {
+				startActivity(new Intent(getActivity(), AboutActivity.class));
+			} else if (pref.getKey().equals(Constants.WORDPRESS_ACOUNT)) {
+				startActivity(new Intent(getActivity(), AddAcount.class));
+			} else if (pref.getKey().equals(Constants.TWITTER_ACCOUNT)) {
+				SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(getActivity());
+				String token = prefs.getString(Constants.ACCESS_TOKEN, null);
+				String secret = prefs.getString(Constants.ACCESS_SECRET, null);
+
+				if (token == null || secret == null) {
+					startActivity(new Intent(getActivity(), TwitterSignInActivity.class));
+				} else {
+					startActivity(new Intent(getActivity(), TwitterAccountActivity.class));
+				}
+			}
+
+			return true;
+		}
 	}
 }

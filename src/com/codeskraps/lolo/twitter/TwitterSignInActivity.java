@@ -84,10 +84,15 @@ public class TwitterSignInActivity extends Activity implements OnClickListener {
 				requestToken = service.getRequestToken();
 
 			} else if (step == STEP.one) {
-				String token = service.getAuthorizationUrl(requestToken);
+				try {
+					String token = service.getAuthorizationUrl(requestToken);
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(token));
-				startActivity(browserIntent);
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(token));
+					startActivity(browserIntent);
+				} catch (Exception e) {
+					Log.i(TAG, "Handled: twitter key - " + e, e);
+					return true;
+				}
 
 			} else if (step == STEP.two) {
 				try {
@@ -109,7 +114,7 @@ public class TwitterSignInActivity extends Activity implements OnClickListener {
 					return false;
 
 				} catch (Exception e) {
-					Log.i(TAG, "Handled: twitter key - " + e.getMessage(), e);
+					Log.i(TAG, "Handled: twitter key - " + e, e);
 					return true;
 				}
 			}
