@@ -17,6 +17,7 @@
 
     <string-array name="OnClick_entries">
         <item>Do nothing</item>
+        <item>Open tweets feed</item>
         <item>Update lo-lo status</item>
         <item>Open widget settings</item>
         <item>Open URL</item>
@@ -26,6 +27,7 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string name="prefsURL_title">URL</string>
@@ -67,7 +69,7 @@
     <string name="no_site_error">Sorry, could not connect to the WordPress site. Please try again later.</string>
 
     <!-- Twitter Accont -->
-    <string name="twi_help">You got to sign in to Twitter using OAth and allow access to 091 Labs lo-lo app. Once you do it will give a code, come here and enter the code you are given.</string>
+    <string name="twi_help">First sign into Twitter using OAth and allow access to 091 Labs lo-lo app. Once you do it will give a code, come here and enter the code you were given.</string>
     <string name="twi_stepone">Step One</string>
     <string name="twi_steptwo">Setp Two</string>
     <string name="twi_goto">Go to Twitter</string>
@@ -86,6 +88,7 @@
 
     <!-- Menu -->
     <string name="men_setting">Settings</string>
+    <string name="men_tweet">Tweet</string>
 
     <!-- About -->
     <string name="about_title">091 Labs lo-lo</string>

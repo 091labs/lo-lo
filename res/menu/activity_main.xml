@@ -1,7 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/men_tweet"
+        android:icon="@drawable/social_send_now"
+        android:showAsAction="always"
+        android:title="@string/men_tweet"/>
+    <item
         android:id="@+id/men_settings"
+        android:icon="@drawable/action_settings"
         android:showAsAction="always"
         android:title="@string/men_setting"/>
 

@@ -9,13 +9,11 @@ import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +23,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.codeskraps.lolo.R;
-import com.codeskraps.lolo.home.PrefsActivity;
 import com.codeskraps.lolo.misc.Constants;
 
 public class TweetActivity extends Activity implements OnClickListener {
@@ -42,6 +39,7 @@ public class TweetActivity extends Activity implements OnClickListener {
 		service = new ServiceBuilder().provider(TwitterApi.class).apiKey("Z4lEh5rSu0rV3fXt37gw7A")
 				.apiSecret("vLLTqO311ZhlVXhl1GaB72DnIwdCOPwzeozNRWy3I").build();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		setContentView(R.layout.tweet);
 
@@ -105,16 +103,10 @@ public class TweetActivity extends Activity implements OnClickListener {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.men_settings:
-			startActivity(new Intent(this, PrefsActivity.class));
+		case android.R.id.home:
+			finish();
 			break;
 		}
 		return true;

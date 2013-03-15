@@ -76,36 +76,11 @@ public class UpdateWidgetReceiver extends BroadcastReceiver {
 		public void run() {
 			try {
 				lolo = Utils.getLolo();
-				// loloRSS =
-				// Utils.getRSSFedd(prefs.getString(Constants.RSS_TITLE, " "));
-				// Log.d(TAG, "loloRSS" + loloRSS[0]);
-				// if (loloRSS != null) {
-				// SharedPreferences.Editor editor = prefs.edit();
-				// editor.putString(Constants.RSS_TITLE, loloRSS[0]);
-				// editor.commit();
-				// }
-
-				// @formatter:off
-//			} catch (SAXException e) {
-//				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "SAXException" : e.getMessage());
-			} catch (UnsupportedEncodingException e) {
-				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "UnsupportedEncodingException" : e.getMessage());
-			} catch (ClientProtocolException e) {
-				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "ClientProtocolException" : e.getMessage());
-			} catch (IOException e) {
-				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "IOException" : e.getMessage());
-			} catch (IllegalArgumentException e) {
-				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "IllegalArgumentException" : e.getMessage());
-			} catch (NullPointerException e) {
-				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "NullPointerException" : e.getMessage());
-			} catch (JSONException e) {
-				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "JSONException" : e.getMessage());
 			} catch (Exception e) {
-				if (BuildConfig.DEBUG) Log.e(TAG, (e == null) ? "Exception" : e.getMessage());
+				Log.i(TAG, "Handled:" + e, e);
 			} finally {
 				handler.post(new MyRunnable());
 			}
-			// @formatter:off
 		}
 	}
 

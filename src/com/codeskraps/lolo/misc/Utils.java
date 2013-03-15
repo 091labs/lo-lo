@@ -52,6 +52,8 @@ import com.codeskraps.lolo.BuildConfig;
 import com.codeskraps.lolo.R;
 import com.codeskraps.lolo.home.PrefsActivity;
 import com.codeskraps.lolo.misc.Constants.LOLO;
+import com.codeskraps.lolo.twitter.TweetActivity;
+import com.codeskraps.lolo.twitter.TweetsFeedActivity;
 
 public class Utils {
 	private static final String TAG = Utils.class.getSimpleName();
@@ -111,19 +113,25 @@ public class Utils {
 			break;
 
 		case 1:
+			intent = new Intent(context, TweetsFeedActivity.class);
+			pendingIntent = PendingIntent.getActivity(context, 0, intent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
+			break;
+
+		case 2:
 			intent = new Intent();
 			intent.setAction(Constants.BROADCAST_RECEIVER);
 			pendingIntent = PendingIntent.getBroadcast(context, 0, intent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 			break;
 
-		case 2:
+		case 3:
 			intent = new Intent(context, PrefsActivity.class);
 			pendingIntent = PendingIntent.getActivity(context, 0, intent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 			break;
 
-		case 3:
+		case 4:
 			intent = new Intent(Intent.ACTION_VIEW);
 			String url = prefs.getString(Constants.EURL,
 					context.getString(R.string.prefsURL_default));

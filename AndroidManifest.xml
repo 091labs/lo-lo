@@ -25,12 +25,14 @@
         </activity>
         <activity android:name=".twitter.TwitterSignInActivity" />
         <activity android:name=".twitter.TwitterAccountActivity" />
-        <activity android:name=".twitter.TweetActivity" >
+        <activity android:name=".twitter.TweetsFeedActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".twitter.TweetActivity" >
         </activity>
         <activity android:name=".home.AddAcount" />
         <activity
@@ -62,6 +64,10 @@
                 <action android:name="com.codeskraps.lolo.BROADCAST_RECEIVER" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".twitter.TwitterService"
+            android:exported="false" />
     </application>
 
 </manifest>
