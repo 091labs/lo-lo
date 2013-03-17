@@ -89,6 +89,7 @@
     <!-- Menu -->
     <string name="men_setting">Settings</string>
     <string name="men_tweet">Tweet</string>
+    <string name="men_refresh">Refresh</string>
 
     <!-- About -->
     <string name="about_title">091 Labs lo-lo</string>

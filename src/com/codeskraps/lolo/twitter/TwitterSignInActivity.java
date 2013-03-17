@@ -127,17 +127,15 @@ public class TwitterSignInActivity extends Activity implements OnClickListener {
 
 			setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
-			if (result)
-				new AlertDialog.Builder(TwitterSignInActivity.this)
-						.setIcon(R.drawable.alerts_and_states_error)
-						.setMessage(R.string.twi_dia_message)
-						.setTitle(R.string.twi_dia_title)
-						.setPositiveButton(R.string.twi_dia_ok,
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										dialog.dismiss();
-									}
-								}).create().show();
+			if (result) new AlertDialog.Builder(TwitterSignInActivity.this)
+					.setIcon(R.drawable.alerts_and_states_error)
+					.setMessage(R.string.twi_dia_message).setTitle(R.string.twi_dia_title)
+					.setPositiveButton(R.string.twi_dia_ok, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.dismiss();
+						}
+					}).create().show();
+			else startService(new Intent(getApplication(), TwitterService.class));
 		}
 	}
 

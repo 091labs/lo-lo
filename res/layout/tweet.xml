@@ -10,6 +10,15 @@
         android:layout_height="1dp"
         android:background="#FF0000" />
 
+    <TextView
+        android:id="@+id/twe_txt_count"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:textIsSelectable="false" />
+
     <EditText
         android:id="@+id/twe_etxt_data"
         android:layout_width="match_parent"
@@ -17,7 +26,9 @@
         android:layout_margin="10dp"
         android:gravity="top"
         android:hint="@string/twe_enter"
-        android:inputType="text" />
+        android:inputType="textMultiLine"
+        android:lines="10"
+        android:singleLine="false" />
 
     <TextView
         android:id="@+id/twe_txt_feedback"

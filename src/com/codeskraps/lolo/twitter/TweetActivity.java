@@ -1,5 +1,9 @@
 package com.codeskraps.lolo.twitter;
 
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TwitterApi;
 import org.scribe.model.OAuthRequest;
@@ -24,6 +28,8 @@ import android.widget.TextView;
 
 import com.codeskraps.lolo.R;
 import com.codeskraps.lolo.misc.Constants;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class TweetActivity extends Activity implements OnClickListener {
 	private static final String TAG = TweetActivity.class.getSimpleName();
@@ -44,6 +50,9 @@ public class TweetActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.tweet);
 
 		etxtTweet = (EditText) findViewById(R.id.twe_etxt_data);
+		TextView txtCount = (TextView) findViewById(R.id.twe_txt_count);
+		txtCount.setText("0");
+		etxtTweet.addTextChangedListener(new TextCount(txtCount));
 		((Button) findViewById(R.id.twe_btn_submit)).setOnClickListener(this);
 	}
 
@@ -94,7 +103,10 @@ public class TweetActivity extends Activity implements OnClickListener {
 			TextView txtFeedBack = (TextView) findViewById(R.id.twe_txt_feedback);
 			String message = null;
 			if (result != null && result.startsWith("{")) {
-				message = "Tweet posted succesfully!";
+				Type collectionType = new TypeToken<Map<String, Object>>() {}.getType();
+				Map<String, Object> json = new Gson().fromJson(result, collectionType);
+				if (json.containsKey("error")) message = (String) json.get("error");
+				else message = "Tweet posted succesfully!";
 			} else {
 				message = "Something has gone wrong!";
 			}

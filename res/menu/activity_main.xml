@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/men_refresh"
+        android:icon="@drawable/navigation_refresh"
+        android:showAsAction="always"
+        android:title="@string/men_refresh"/>
+    <item
         android:id="@+id/men_tweet"
         android:icon="@drawable/social_send_now"
         android:showAsAction="always"
@@ -8,7 +13,8 @@
     <item
         android:id="@+id/men_settings"
         android:icon="@drawable/action_settings"
-        android:showAsAction="always"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
         android:title="@string/men_setting"/>
 
 </menu>

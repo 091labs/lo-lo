@@ -1,24 +1,20 @@
 package com.codeskraps.lolo.twitter;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.TwitterApi;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.oauth.OAuthService;
+import java.util.Locale;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,31 +22,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codeskraps.lolo.R;
+import com.codeskraps.lolo.home.DataBase;
+import com.codeskraps.lolo.home.LoloApp;
 import com.codeskraps.lolo.home.PrefsActivity;
+import com.codeskraps.lolo.home.TweetItem;
 import com.codeskraps.lolo.misc.Constants;
 import com.codeskraps.lolo.misc.ImageHelper;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class TweetsFeedActivity extends Activity {
 	private static final String TAG = TweetsFeedActivity.class.getSimpleName();
-	private static final String RESOURCE_URL = "https://api.twitter.com/1.1/statuses/home_timeline.json";
 
-	private OAuthService service = null;
 	private TweetsAdapter adapter = null;
+	private BroadcastReceiver refreshReceiver = new RefreshReciever();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		service = new ServiceBuilder().provider(TwitterApi.class).apiKey("Z4lEh5rSu0rV3fXt37gw7A")
-				.apiSecret("vLLTqO311ZhlVXhl1GaB72DnIwdCOPwzeozNRWy3I").build();
 
 		setContentView(R.layout.tweets);
 
@@ -64,6 +59,24 @@ public class TweetsFeedActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		new GetTimeline().execute();
+
+		IntentFilter filter = new IntentFilter(Constants.ACTION_REFRESH);
+		registerReceiver(refreshReceiver, filter);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		unregisterReceiver(refreshReceiver);
+	}
+
+	private class RefreshReciever extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			new GetTimeline().execute();
+		}
 	}
 
 	@Override
@@ -81,11 +94,15 @@ public class TweetsFeedActivity extends Activity {
 		case R.id.men_settings:
 			startActivity(new Intent(this, PrefsActivity.class));
 			break;
+		case R.id.men_refresh:
+			setProgressBarIndeterminateVisibility(Boolean.TRUE);
+			startService(new Intent(this, TwitterService.class));
+			break;
 		}
 		return true;
 	}
 
-	private class GetTimeline extends AsyncTask<Void, Void, String> {
+	private class GetTimeline extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected void onPreExecute() {
@@ -94,62 +111,67 @@ public class TweetsFeedActivity extends Activity {
 		}
 
 		@Override
-		protected String doInBackground(Void... params) {
+		protected Void doInBackground(Void... params) {
+			Cursor cursor = null;
 			try {
-				SharedPreferences prefs = PreferenceManager
-						.getDefaultSharedPreferences(getApplication());
-				String token = prefs.getString(Constants.ACCESS_TOKEN, null);
-				String secret = prefs.getString(Constants.ACCESS_SECRET, null);
+				LoloApp app = (LoloApp) getApplication();
+				cursor = app.getDataBase().query(DataBase.DB_TABLE_TWITTER);
+				startManagingCursor(cursor);
 
-				Token accessToken = new Token(token, secret);
+				final int createdColumnIndex = cursor.getColumnIndex(DataBase.C_TWEET_CREATED);
+				final int imgColumnIndex = cursor.getColumnIndex(DataBase.C_TWEET_IMAGE);
+				final int nameColumnIndex = cursor.getColumnIndex(DataBase.C_TWEET_NAME);
+				final int screenColumnIndex = cursor.getColumnIndex(DataBase.C_TWEET_SCREEN);
+				final int textColumnIndex = cursor.getColumnIndex(DataBase.C_TWEET_TEXT);
 
-				OAuthRequest request = new OAuthRequest(Verb.GET, RESOURCE_URL);
-				service.signRequest(accessToken, request);
-				return request.send().getBody();
+				Log.d(TAG, ("Got cursor with records: " + cursor.getCount()));
 
-			} catch (Exception e) {
-				Log.i(TAG, "Handled: GetTimeline - " + e, e);
+				String created, image, name, screen, text;
+				Log.d(TAG, "tweets:" + cursor.getCount());
+				ArrayList<TweetItem> tweets = new ArrayList<TweetItem>();
+				while (cursor.moveToNext()) {
+					created = cursor.getString(createdColumnIndex);
+					image = cursor.getString(imgColumnIndex);
+					name = cursor.getString(nameColumnIndex);
+					screen = cursor.getString(screenColumnIndex);
+					text = cursor.getString(textColumnIndex);
+					TweetItem tweet = new TweetItem(created, image, text, name, screen);
+					tweets.add(tweet);
+				}
+
+				adapter.setTweet(tweets);
+
+			} finally {
+				stopManagingCursor(cursor);
+				cursor.close();
 			}
 			return null;
 		}
 
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			new Gson();
-
 			setProgressBarIndeterminateVisibility(Boolean.FALSE);
-
-			if (result != null) {
-				try {
-					Log.v(TAG, result);
-					Type collectionType = new TypeToken<List<Map<String, Object>>>() {}.getType();
-					List<Map<String, Object>> tweets = new Gson().fromJson(result, collectionType);
-					adapter.setTweets(tweets);
-					adapter.notifyDataSetChanged();
-				} catch (Exception e) {
-					Log.i(TAG, "Handle: onPostExecute - " + e, e);
-					Log.i(TAG, "Handle: result:" + result);
-				}
-			}
+			adapter.notifyDataSetChanged();
 		}
 	}
 
 	private class TweetsAdapter extends BaseAdapter {
-		private List<Map<String, Object>> tweets = null;
+		private List<TweetItem> tweets;
 		private LayoutInflater mInflater = null;
 
 		public TweetsAdapter(Context context) {
 			mInflater = LayoutInflater.from(context);
 		}
 
-		public void setTweets(List<Map<String, Object>> tweets) {
+		public void setTweet(ArrayList<TweetItem> tweets) {
 			this.tweets = tweets;
 		}
 
 		@Override
 		public int getCount() {
-			if (tweets == null || tweets.isEmpty()) return 0;
+			if (tweets == null) return 0;
+			if (tweets.isEmpty()) return 0;
 			return tweets.size();
 		}
 
@@ -173,21 +195,43 @@ public class TweetsFeedActivity extends Activity {
 
 				vHolder = new ViewHolder();
 				vHolder.ImgUser = (ImageView) convertView.findViewById(R.id.tws_row_img_user);
-				vHolder.text = (TextView) convertView.findViewById(R.id.tws_row_txt_text);
+				vHolder.text = (WebView) convertView.findViewById(R.id.tws_row_txt_text);
 				vHolder.txtUser = (TextView) convertView.findViewById(R.id.tws_row_txt_user);
+				vHolder.txtScreenName = (TextView) convertView
+						.findViewById(R.id.tws_row_txt_screen_name);
+				vHolder.txtCreated = (TextView) convertView.findViewById(R.id.tws_row_txt_created);
 
 				convertView.setTag(vHolder);
 				convertView.setId(position);
 			}
 
+			int back = position == 0 ? R.drawable.top_tow : R.drawable.middle_row;
+
+			convertView.setBackgroundResource(back);
+
 			try {
-				Map<String, Object> tweet = tweets.get(position);
-				Map<String, Object> user = (Map<String, Object>) tweet.get("user");
-				
-				String url = (String) user.get("profile_image_url");
-				ImageHelper.loadBitmap(getResources(), url, vHolder.ImgUser);
-				vHolder.txtUser.setText((String) user.get("name"));
-				vHolder.text.setText((String) tweet.get("text"));
+				TweetItem tweet = tweets.get(position);
+
+				ImageHelper.loadBitmap(getResources(), tweet.getImgUser(), vHolder.ImgUser);
+				vHolder.txtUser.setText(tweet.getTxtUser());
+				vHolder.txtScreenName.setText("@" + tweet.getTxtScreenName());
+				StringBuilder sb = new StringBuilder("<html><body>");
+				sb.append(fixLinks(tweet.getText()));
+				sb.append("</body></html>");
+				vHolder.text.loadDataWithBaseURL(null, sb.toString(), "text/html", "UTF-8", null);
+				vHolder.text.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+				long created = Long.parseLong(tweet.getCreated());
+				created = (System.currentTimeMillis() - created) / (1000 * 60);
+				if (created > 59) {
+					created = created / 60;
+					if (created > 24) {
+						Date date = new SimpleDateFormat("ddMMM", Locale.ENGLISH).parse(tweet
+								.getCreated());
+						vHolder.txtCreated.setText(date.toString());
+					} else vHolder.txtCreated.setText(String.valueOf(created) + "h");
+				} else vHolder.txtCreated.setText(String.valueOf(created) + "m");
+
 			} catch (Exception e) {
 				Log.i(TAG, "Handled: " + e, e);
 			}
@@ -195,9 +239,19 @@ public class TweetsFeedActivity extends Activity {
 		}
 	}
 
+	private String fixLinks(String body) {
+		String regex = "(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+		body = body.replaceAll(regex, "<a href=\"$0\">$0</a>");
+		body = body.replace(">http://", ">");
+		Log.d(TAG, body);
+		return body;
+	}
+
 	public static class ViewHolder {
 		ImageView ImgUser;
-		TextView text;
+		WebView text;
 		TextView txtUser;
+		TextView txtScreenName;
+		TextView txtCreated;
 	}
 }
