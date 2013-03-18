@@ -4,7 +4,7 @@
 * <b>Git:</b> https://github.com/091labs/lo-lo
 * <b>Author:</b> 091 Labs members
 * <b>License:</b> GNU GPL v3
-* <b>Latest Version:</b> 2.2
+* <b>Latest Version:</b> 2.3
 * <b>Release Date:</b> 2013
 
 == General Infromation
@@ -31,6 +31,11 @@ Install from Google Play
 * http://play.google.com/store/apps/details?id=com.codeskraps.lolo
 
 == ChangeLog
+<b>v2.3</b>
+* Redesign twitter feed
+* Tweets are now save into database
+* Character count in send tweet activity
+
 <b>v2.2</b>
 * New Twitter feed
 

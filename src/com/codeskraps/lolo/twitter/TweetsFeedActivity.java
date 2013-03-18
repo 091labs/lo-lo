@@ -226,9 +226,9 @@ public class TweetsFeedActivity extends Activity {
 				if (created > 59) {
 					created = created / 60;
 					if (created > 24) {
-						Date date = new SimpleDateFormat("ddMMM", Locale.ENGLISH).parse(tweet
-								.getCreated());
-						vHolder.txtCreated.setText(date.toString());
+						Date date = new Date(Long.parseLong(tweet.getCreated()));
+						String sDate = new SimpleDateFormat("ddMMM", Locale.ENGLISH).format(date);
+						vHolder.txtCreated.setText(sDate);
 					} else vHolder.txtCreated.setText(String.valueOf(created) + "h");
 				} else vHolder.txtCreated.setText(String.valueOf(created) + "m");
 
