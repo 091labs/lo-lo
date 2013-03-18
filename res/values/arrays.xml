@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="OnClick_entries">
+        <item>Do nothing</item>
+        <item>Open tweets feed</item>
+        <item>Update lo-lo status</item>
+        <item>Open widget settings</item>
+        <item>Open URL</item>
+    </string-array>
+    <string-array name="OnClick_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="interval_entries">
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>Half hour</item>
+        <item>An hour</item>
+    </string-array>
+    <string-array name="interval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="twitter_interval_entries">
+        <item>15 minutes</item>
+        <item>Half hour</item>
+        <item>An hour</item>
+        <item>2 hours</item>
+    </string-array>
+    <string-array name="twitter_interval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+</resources>

@@ -11,10 +11,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codeskraps.lolo.R;
+import com.codeskraps.lolo.home.AboutActivity;
 import com.codeskraps.lolo.home.DataBase;
 import com.codeskraps.lolo.home.LoloApp;
 import com.codeskraps.lolo.home.PrefsActivity;
@@ -62,6 +65,17 @@ public class TweetsFeedActivity extends Activity {
 
 		IntentFilter filter = new IntentFilter(Constants.ACTION_REFRESH);
 		registerReceiver(refreshReceiver, filter);
+
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		if (prefs.getBoolean(Constants.FIRST_LAUNCH, true)) {
+			startActivity(new Intent(this, AboutActivity.class));
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean(Constants.FIRST_LAUNCH, false);
+			editor.commit();
+		}
+
+		String token = prefs.getString(Constants.ACCESS_TOKEN, null);
+		if (token != null) ((TextView) findViewById(R.id.tws_signin)).setVisibility(View.GONE);
 	}
 
 	@Override

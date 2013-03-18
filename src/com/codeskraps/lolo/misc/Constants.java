@@ -20,6 +20,7 @@ public class Constants {
 	public static final String INTERVAL = "lstInterval";
 	public static final String WORDPRESS_ACOUNT = "prefWordPressAccount";
 	public static final String TWITTER_ACCOUNT = "prefTwitterAccount";
+	public static final String TWITTER_INTERVAL = "lstTwitterInterval";
 	public static final String ABOUT = "prefAbout";
 	public static final String FIRST_LAUNCH = "firstLaunch";
 	public static final String RSS_TITLE = "rsstitle";

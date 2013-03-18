@@ -13,42 +13,11 @@
     <string name="prefs24_summaryTwo">13:00</string>
     <string name="prefsOnClick_title">On touch action</string>
     <string name="prefsOnClick_dialogTitle">On touch action</string>
-    <string name="prefsOnClick_summary">Choose what should be done when you touch the widget -</string>
-
-    <string-array name="OnClick_entries">
-        <item>Do nothing</item>
-        <item>Open tweets feed</item>
-        <item>Update lo-lo status</item>
-        <item>Open widget settings</item>
-        <item>Open URL</item>
-    </string-array>
-    <string-array name="OnClick_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
     <string name="prefsURL_title">URL</string>
     <string name="prefsURL_summary">Set a Custom URL -</string>
     <string name="prefsURL_default">091labs.com</string>
     <string name="prefsInterval_title">Interval update</string>
-    <string name="prefsInterval_dialogTitle">Interval update</string>
-
-    <string-array name="interval_entries">
-        <item>5 minutes</item>
-        <item>15 minutes</item>
-        <item>Half hour</item>
-        <item>An hour</item>
-    </string-array>
-    <string-array name="interval_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
+    <string name="prefsTwitterInterval_title">Twitter interval update</string>
     <string name="prefsCat_Info">Information</string>
     <string name="prefsInfo_Title">091 Labs lo-lo v2.3</string>
     <string name="prefsInfo_summary">GNU GPL License v3 &#8211; 2013</string>
@@ -63,7 +32,6 @@
     <string name="no_network_title">No network available</string>
     <string name="no_network_message">There is no network available. Please connect to a network and try again.</string>
     <string name="required_fields">Required Fields</string>
-    <string name="required_field">Required Field</string>
     <string name="url_username_password_required">Please fill in all of the fields before submitting.</string>
     <string name="error">Error</string>
     <string name="no_site_error">Sorry, could not connect to the WordPress site. Please try again later.</string>
@@ -78,13 +46,8 @@
     <string name="twi_dia_title">Error!</string>
     <string name="twi_dia_ok">OK</string>
     <string name="twi_dia_message">Something has gone wrong&#8230;</string>
-
-    <!-- Tweet -->
     <string name="twe_enter">Enter tweet here</string>
-
-    <!-- Facebook -->
-    <string name="fac_help">You got to sign in to Facebook using OAth and allow access to 091 Labs lo-lo app. Once you do it will give a code, come here and enter the code you are given.</string>
-    <string name="fac_goto">Go to Facebook</string>
+    <string name="twi_signin">Sign in to Twitter</string>
 
     <!-- Menu -->
     <string name="men_setting">Settings</string>
@@ -92,7 +55,6 @@
     <string name="men_refresh">Refresh</string>
 
     <!-- About -->
-    <string name="about_title">091 Labs lo-lo</string>
     <string name="about_summary">About</string>
 
 </resources>

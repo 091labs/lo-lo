@@ -33,6 +33,9 @@ Install from Google Play
 == ChangeLog
 <b>v2.3</b>
 * Redesign twitter feed
+* Update interval twitter setting
+* About welcome page on first launch moved to default launcher
+* Message to sign in to twitter
 * Tweets are now save into database
 * Character count in send tweet activity
 

@@ -26,6 +26,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 		sb.append("091 Labs is a collaborative community space based in Galway City, Ireland. It is a shared physical space for any and all creative projects: art, woodwork, software, photography and electronics – to name but a few. Our aim is to provide Galway with a place for people to work and collaborate on creative projects, to learn and to share their knowledge. We welcome all skill levels and all creative ideas.<br /><br />");
 		sb.append("<h2><font color='red'>lo-lo</font></h2>");
 		sb.append("This is a way for members and the general public to know when the Labs are open or close. Labs on, labs off.<br /><br />");
+		sb.append("Now members can sign in to Twitter to see tweets and can also tweet from within the app.<br /><br />");
 		sb.append("<font color='#AAAAAA'>Website:</font> 091labs.com<br />");
 		sb.append("<font color='#AAAAAA'>Email:</font> info@091labs.com<br />");
 		String version = getString(R.string.prefsInfo_Title);

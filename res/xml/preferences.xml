@@ -26,7 +26,7 @@
 
         <ListPreference
             android:defaultValue="1"
-            android:dialogTitle="@string/prefsInterval_dialogTitle"
+            android:dialogTitle="@string/prefsInterval_title"
             android:entries="@array/interval_entries"
             android:entryValues="@array/interval_values"
             android:key="lstInterval"
@@ -41,6 +41,14 @@
         <Preference
             android:key="prefTwitterAccount"
             android:title="Twitter account" />
+
+        <ListPreference
+            android:defaultValue="2"
+            android:dialogTitle="@string/prefsTwitterInterval_title"
+            android:entries="@array/twitter_interval_entries"
+            android:entryValues="@array/twitter_interval_values"
+            android:key="lstTwitterInterval"
+            android:title="@string/prefsTwitterInterval_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefsCat_Info" >
         <Preference

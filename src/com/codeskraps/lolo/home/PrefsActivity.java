@@ -114,9 +114,11 @@ public class PrefsActivity extends FragmentActivity {
 		private CheckBoxPreference chkSync = null;
 		private CheckBoxPreference chk24 = null;
 		private ListPreference lstInterval = null;
+		private ListPreference lstTwitterInterval = null;
 
 		private String[] entries_OnClick = null;
 		private String[] entries_Interval = null;
+		private String[] entries_TwitterInterval = null;
 
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,8 @@ public class PrefsActivity extends FragmentActivity {
 
 			entries_OnClick = getResources().getStringArray(R.array.OnClick_entries);
 			entries_Interval = getResources().getStringArray(R.array.interval_entries);
+			entries_TwitterInterval = getResources().getStringArray(
+					R.array.twitter_interval_entries);
 
 			lstOnClick = (ListPreference) findPreference(Constants.ONCLICK);
 			eURL = (EditTextPreference) findPreference(Constants.EURL);
@@ -140,6 +144,7 @@ public class PrefsActivity extends FragmentActivity {
 			// .setOnPreferenceClickListener(this);
 			((Preference) findPreference(Constants.TWITTER_ACCOUNT))
 					.setOnPreferenceClickListener(this);
+			lstTwitterInterval = (ListPreference) findPreference(Constants.TWITTER_INTERVAL);
 			((Preference) findPreference(Constants.ABOUT)).setOnPreferenceClickListener(this);
 		}
 
@@ -171,12 +176,9 @@ public class PrefsActivity extends FragmentActivity {
 
 			if (action != 3) eURL.setEnabled(false);
 
-			if (prefs.getBoolean(Constants.FIRST_LAUNCH, true)) {
-				startActivity(new Intent(getActivity(), AboutActivity.class));
-				SharedPreferences.Editor editor = prefs.edit();
-				editor.putBoolean(Constants.FIRST_LAUNCH, false);
-				editor.commit();
-			}
+			String intervalTwitter = prefs.getString(Constants.TWITTER_INTERVAL, "2");
+			int intTwitter = Integer.parseInt(intervalTwitter);
+			lstTwitterInterval.setSummary(entries_TwitterInterval[intTwitter]);
 		}
 
 		@Override
@@ -213,6 +215,14 @@ public class PrefsActivity extends FragmentActivity {
 				String intervalString = prefs.getString(Constants.INTERVAL, "1");
 				int interval = Integer.parseInt(intervalString);
 				lstInterval.setSummary(entries_Interval[interval]);
+
+			} else if (key.equals(Constants.TWITTER_INTERVAL)) {
+				String intervalTwitter = prefs.getString(Constants.TWITTER_INTERVAL, "2");
+				int intTwitter = Integer.parseInt(intervalTwitter);
+				lstTwitterInterval.setSummary(entries_TwitterInterval[intTwitter]);
+
+				LoloApp app = (LoloApp) getActivity().getApplication();
+				app.setTwitterAlarm();
 			}
 		}
 
